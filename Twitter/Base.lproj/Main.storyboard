@@ -416,10 +416,10 @@
                         </constraints>
                     </view>
                     <navigationItem key="navigationItem" title="Home" id="dro-IG-BIm">
-                        <barButtonItem key="leftBarButtonItem" title="Logout" id="cxy-Rk-QtJ">
+                        <barButtonItem key="leftBarButtonItem" image="menu" id="cxy-Rk-QtJ">
                             <color key="tintColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                             <connections>
-                                <action selector="onLogout:" destination="eRg-H5-dAb" id="Mox-FO-xX0"/>
+                                <action selector="onMenu:" destination="eRg-H5-dAb" id="MJq-0E-WWi"/>
                             </connections>
                         </barButtonItem>
                         <barButtonItem key="rightBarButtonItem" systemItem="add" id="Srr-nO-dcV">
@@ -438,6 +438,24 @@
                 <placeholder placeholderIdentifier="IBFirstResponder" id="xGr-v0-pKF" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="1321" y="497"/>
+        </scene>
+        <!--Menu View Controller-->
+        <scene sceneID="4Jb-Rx-tP0">
+            <objects>
+                <viewController storyboardIdentifier="MenuViewController" id="wwn-hV-yhJ" customClass="MenuViewController" customModule="Twitter" customModuleProvider="target" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="pCf-G1-9Qo"/>
+                        <viewControllerLayoutGuide type="bottom" id="TOW-di-GZb"/>
+                    </layoutGuides>
+                    <view key="view" contentMode="scaleToFill" id="r6c-Cm-zbC">
+                        <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <color key="backgroundColor" white="0.33333333333333331" alpha="1" colorSpace="calibratedWhite"/>
+                    </view>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="PFX-OF-l7c" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="1321" y="1118"/>
         </scene>
         <!--Tweet-->
         <scene sceneID="qAd-WG-U2j">
@@ -801,9 +819,33 @@
             </objects>
             <point key="canvasLocation" x="859" y="497"/>
         </scene>
+        <!--View Controller-->
+        <scene sceneID="m5T-v1-61u">
+            <objects>
+                <viewController id="cGi-nM-YjV" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="HvN-9P-eNx"/>
+                        <viewControllerLayoutGuide type="bottom" id="sfH-mk-2fi"/>
+                    </layoutGuides>
+                    <view key="view" contentMode="scaleToFill" id="Wvg-5C-AdX">
+                        <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <view contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="kKs-fo-KAv">
+                                <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
+                                <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                            </view>
+                        </subviews>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                    </view>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="YMB-tJ-Fcq" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+        </scene>
     </scenes>
     <resources>
         <image name="favorite.png" width="16" height="16"/>
+        <image name="menu" width="22" height="22"/>
         <image name="reply.png" width="16" height="16"/>
         <image name="retweet.png" width="19" height="16"/>
     </resources>
@@ -813,6 +855,6 @@
         <simulatedScreenMetrics key="destination" type="retina4"/>
     </simulatedMetricsContainer>
     <inferredMetricsTieBreakers>
-        <segue reference="RbH-74-bhH"/>
+        <segue reference="L9e-oi-8qe"/>
     </inferredMetricsTieBreakers>
 </document>

@@ -12,6 +12,10 @@ class TimelineViewController: UIViewController, UITableViewDataSource, UITableVi
     var tweets: [Tweet]!
     var minId: UInt64!
     var maxId: UInt64!
+    var menuRevealed: Bool!
+    var screenWidth: CGFloat?
+    
+    var menuViewController: MenuViewController!
     
     var refreshControl: UIRefreshControl!
     var tweet: Tweet? { // to hold the newly composed tweet from NewTweetViewController
@@ -24,8 +28,20 @@ class TimelineViewController: UIViewController, UITableViewDataSource, UITableVi
     }
     
     @IBOutlet weak var tweetsTable: UITableView!
-    @IBAction func onLogout(sender: AnyObject) {
-        User.currentUser?.logout()
+
+    
+    @IBAction func onMenu(sender: UIBarButtonItem) {
+        if (menuRevealed == false){
+            UIView.animateWithDuration(0.5, animations: { () -> Void in
+                self.view!.center = CGPointMake(self.view!.center.x + self.screenWidth! - self.screenWidth! / 6, self.view!.center.y)
+            })
+            menuRevealed = true
+        } else {
+            UIView.animateWithDuration(0.5, animations: { () -> Void in
+                self.view!.center = CGPointMake(self.view!.center.x - self.screenWidth! + self.screenWidth! / 6, self.view!.center.y)
+            })
+            menuRevealed = false
+        }
     }
     
     required init(coder aDecoder: NSCoder) {
@@ -33,6 +49,7 @@ class TimelineViewController: UIViewController, UITableViewDataSource, UITableVi
         minId = UINT64_MAX
         maxId = 1 as UInt64
         tweets = [Tweet]()
+        menuRevealed = false
     }
     
     override func viewDidLoad() {
@@ -41,13 +58,19 @@ class TimelineViewController: UIViewController, UITableViewDataSource, UITableVi
         self.navigationController?.navigationBar.tintColor = UIColor.whiteColor()
         self.navigationController?.navigationBar.barStyle = UIBarStyle.Black
         
+        var storyBoard = UIStoryboard(name: "Main", bundle: nil)
+        menuViewController = storyBoard.instantiateViewControllerWithIdentifier("MenuViewController") as! MenuViewController
+        self.menuViewController.view.frame = self.view.frame
+        self.view.insertSubview(menuViewController.view, atIndex: 0)
+        
+        screenWidth = self.view.frame.width
+        
         NSNotificationCenter.defaultCenter().addObserver(self, selector: "updateTweetTableWithNewTweet:", name: newTweetCreatedNotification, object: nil)
         
         NSNotificationCenter.defaultCenter().addObserver(self, selector: "updateTweetTableWithTweet:", name: tweetUpdatedNotification, object: nil)
         
         self.tweetsTable.estimatedRowHeight = 260
         self.tweetsTable.rowHeight = UITableViewAutomaticDimension
-        
         self.tweetsTable.addInfiniteScrollingWithActionHandler({
             println("infinite scroll triggered")
             self.fetchMoreTimeline()

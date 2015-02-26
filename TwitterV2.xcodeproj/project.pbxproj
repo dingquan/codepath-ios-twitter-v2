@@ -26,6 +26,7 @@
 		46496FD51A941AB700F0F24C /* User.swift in Sources */ = {isa = PBXBuildFile; fileRef = 46496FD41A941AB700F0F24C /* User.swift */; };
 		46496FD71A94604200F0F24C /* TimelineViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 46496FD61A94604200F0F24C /* TimelineViewController.swift */; };
 		467A1B651A98513D0001674B /* retweet_on.png in Resources */ = {isa = PBXBuildFile; fileRef = 467A1B641A98513D0001674B /* retweet_on.png */; };
+		4692C24D1A9EF15F00A0D2F1 /* MenuViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4692C24C1A9EF15F00A0D2F1 /* MenuViewController.swift */; };
 		46F808441A969BEB00604ECD /* ImageHelpers.swift in Sources */ = {isa = PBXBuildFile; fileRef = 46F808431A969BEB00604ECD /* ImageHelpers.swift */; };
 		BEB772777A390D0D58B204DC /* libPods.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 00A8FE49EE5A57C587CC639B /* libPods.a */; };
 /* End PBXBuildFile section */
@@ -68,6 +69,7 @@
 		46496FD41A941AB700F0F24C /* User.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = User.swift; sourceTree = "<group>"; };
 		46496FD61A94604200F0F24C /* TimelineViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TimelineViewController.swift; sourceTree = "<group>"; };
 		467A1B641A98513D0001674B /* retweet_on.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = retweet_on.png; sourceTree = "<group>"; };
+		4692C24C1A9EF15F00A0D2F1 /* MenuViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MenuViewController.swift; sourceTree = "<group>"; };
 		46F808431A969BEB00604ECD /* ImageHelpers.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ImageHelpers.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -168,6 +170,7 @@
 				46496FD61A94604200F0F24C /* TimelineViewController.swift */,
 				4602E3831A95192A00130134 /* TweetDetailViewController.swift */,
 				4602E3851A95194100130134 /* NewTweetViewController.swift */,
+				4692C24C1A9EF15F00A0D2F1 /* MenuViewController.swift */,
 			);
 			path = ViewControllers;
 			sourceTree = "<group>";
@@ -367,6 +370,7 @@
 				4616E6EF1A955EEA00B6B0D7 /* ImageTableViewCell.swift in Sources */,
 				4616E6F11A955EF800B6B0D7 /* TextTableViewCell.swift in Sources */,
 				462F09041A93E56D00B83744 /* AppDelegate.swift in Sources */,
+				4692C24D1A9EF15F00A0D2F1 /* MenuViewController.swift in Sources */,
 				46496FD51A941AB700F0F24C /* User.swift in Sources */,
 				46496FD31A941AAD00F0F24C /* Tweet.swift in Sources */,
 				4602E3841A95192A00130134 /* TweetDetailViewController.swift in Sources */,
