@@ -8,12 +8,16 @@
 
 import UIKit
 
-class MenuViewController: UIViewController {
+class MenuViewController: UIViewController, UITableViewDataSource, UITableViewDelegate {
 
+    @IBOutlet weak var menuTable: UITableView!
+    
     override func viewDidLoad() {
         super.viewDidLoad()
 
         // Do any additional setup after loading the view.
+        // only show cells with data (remove empty cells so that it doesn't show the separator for empty cells
+        self.menuTable.tableFooterView = UIView(frame: CGRectZero)
     }
 
     override func didReceiveMemoryWarning() {
@@ -21,6 +25,32 @@ class MenuViewController: UIViewController {
         // Dispose of any resources that can be recreated.
     }
     
+    func numberOfSectionsInTableView(tableView: UITableView) -> Int {
+        return 1
+    }
+    
+    func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        return 3
+    }
+    
+    func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
+        
+        var cell = tableView.dequeueReusableCellWithIdentifier("MenuCell", forIndexPath: indexPath) as! MenuTableViewCell
+        
+        if indexPath.row == 0 {
+            cell.icon.image = UIImage(named: "profile")
+            cell.menuLabel.text = "My Profile"
+        } else if indexPath.row == 1 {
+            cell.icon.image = UIImage(named: "home")
+            cell.menuLabel.text = "Home Timeline"
+        } else if indexPath.row == 2 {
+            cell.icon.image = UIImage(named: "at")
+            cell.menuLabel.text = "Mentions Timeline"
+        }
+        cell.menuLabel.sizeToFit()
+        
+        return cell
+    }
 
     /*
     // MARK: - Navigation

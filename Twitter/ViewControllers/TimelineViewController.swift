@@ -8,14 +8,16 @@
 
 import UIKit
 
+protocol TimelineViewControllerDelegate {
+    func showHideMenu();
+}
+
 class TimelineViewController: UIViewController, UITableViewDataSource, UITableViewDelegate, TweetTableViewCellDelegate {
     var tweets: [Tweet]!
     var minId: UInt64!
     var maxId: UInt64!
-    var menuRevealed: Bool!
-    var screenWidth: CGFloat?
     
-    var menuViewController: MenuViewController!
+    var delegate: TimelineViewControllerDelegate?
     
     var refreshControl: UIRefreshControl!
     var tweet: Tweet? { // to hold the newly composed tweet from NewTweetViewController
@@ -27,29 +29,18 @@ class TimelineViewController: UIViewController, UITableViewDataSource, UITableVi
         }
     }
     
-    @IBOutlet weak var tweetsTable: UITableView!
-
-    
-    @IBAction func onMenu(sender: UIBarButtonItem) {
-        if (menuRevealed == false){
-            UIView.animateWithDuration(0.5, animations: { () -> Void in
-                self.view!.center = CGPointMake(self.view!.center.x + self.screenWidth! - self.screenWidth! / 6, self.view!.center.y)
-            })
-            menuRevealed = true
-        } else {
-            UIView.animateWithDuration(0.5, animations: { () -> Void in
-                self.view!.center = CGPointMake(self.view!.center.x - self.screenWidth! + self.screenWidth! / 6, self.view!.center.y)
-            })
-            menuRevealed = false
-        }
-    }
-    
     required init(coder aDecoder: NSCoder) {
         super.init(coder: aDecoder)
         minId = UINT64_MAX
         maxId = 1 as UInt64
         tweets = [Tweet]()
-        menuRevealed = false
+    }
+    
+    @IBOutlet weak var tweetsTable: UITableView!
+
+    
+    @IBAction func onMenu(sender: UIBarButtonItem) {
+        delegate?.showHideMenu()
     }
     
     override func viewDidLoad() {
@@ -57,13 +48,6 @@ class TimelineViewController: UIViewController, UITableViewDataSource, UITableVi
 
         self.navigationController?.navigationBar.tintColor = UIColor.whiteColor()
         self.navigationController?.navigationBar.barStyle = UIBarStyle.Black
-        
-        var storyBoard = UIStoryboard(name: "Main", bundle: nil)
-        menuViewController = storyBoard.instantiateViewControllerWithIdentifier("MenuViewController") as! MenuViewController
-        self.menuViewController.view.frame = self.view.frame
-        self.view.insertSubview(menuViewController.view, atIndex: 0)
-        
-        screenWidth = self.view.frame.width
         
         NSNotificationCenter.defaultCenter().addObserver(self, selector: "updateTweetTableWithNewTweet:", name: newTweetCreatedNotification, object: nil)
         
