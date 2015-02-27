@@ -8,8 +8,16 @@
 
 import UIKit
 
+protocol MenuViewControllerDelegate {
+    func didSelectProfile()
+    func didSelectHomeTimeline()
+    func didSelectMentions()
+}
+
 class MenuViewController: UIViewController, UITableViewDataSource, UITableViewDelegate {
 
+    var delegate: MenuViewControllerDelegate?
+    
     @IBOutlet weak var menuTable: UITableView!
     
     override func viewDidLoad() {
@@ -30,7 +38,7 @@ class MenuViewController: UIViewController, UITableViewDataSource, UITableViewDe
     }
     
     func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return 3
+        return 4
     }
     
     func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
@@ -46,10 +54,26 @@ class MenuViewController: UIViewController, UITableViewDataSource, UITableViewDe
         } else if indexPath.row == 2 {
             cell.icon.image = UIImage(named: "at")
             cell.menuLabel.text = "Mentions Timeline"
+        } else if indexPath.row == 3 {
+            cell.menuLabel.text = "Logout"
         }
         cell.menuLabel.sizeToFit()
         
         return cell
+    }
+    
+    func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
+        let cell = tableView.cellForRowAtIndexPath(indexPath)
+        cell?.selectionStyle = UITableViewCellSelectionStyle.None
+        if indexPath.row == 0 {
+            delegate?.didSelectProfile()
+        } else if indexPath.row == 1 {
+            delegate?.didSelectHomeTimeline()
+        } else if indexPath.row == 2 {
+            delegate?.didSelectMentions()
+        } else if indexPath.row == 3 {
+            User.currentUser?.logout()
+        }
     }
 
     /*

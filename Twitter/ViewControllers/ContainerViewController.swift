@@ -8,7 +8,7 @@
 
 import UIKit
 
-class ContainerViewController: UIViewController, TimelineViewControllerDelegate {
+class ContainerViewController: UIViewController, TimelineViewControllerDelegate, MenuViewControllerDelegate {
     var menuRevealed: Bool!
     
     var timelineViewController: TimelineViewController!
@@ -38,6 +38,7 @@ class ContainerViewController: UIViewController, TimelineViewControllerDelegate 
 //        menuNavController = UINavigationController(rootViewController: menuViewController)
         
         timelineViewController.delegate = self
+        menuViewController.delegate = self
         
         self.addChildViewController(timelineNavController)
         self.timelineNavController.view.frame = self.view.frame
@@ -76,6 +77,7 @@ class ContainerViewController: UIViewController, TimelineViewControllerDelegate 
             self.addChildViewController(menuNavController)
             self.menuNavController.view.frame = self.view.frame
             self.view.insertSubview(menuNavController.view, atIndex: 0)
+            self.menuNavController.didMoveToParentViewController(self)
         }
     }
     
@@ -84,6 +86,22 @@ class ContainerViewController: UIViewController, TimelineViewControllerDelegate 
             self.menuNavController?.willMoveToParentViewController(nil)
             self.menuNavController?.view.removeFromSuperview()
             self.menuNavController.didMoveToParentViewController(nil)
+        }
+    }
+    
+    func addTimelineNavController(){
+        if timelineNavController != nil {
+            self.addChildViewController(timelineNavController)
+            self.view.addSubview(timelineNavController.view)
+            self.timelineNavController.didMoveToParentViewController(self)
+        }
+    }
+    
+    func removeTimelineNavController(){
+        if timelineNavController != nil {
+            self.timelineNavController.willMoveToParentViewController(nil)
+            self.timelineNavController.view.removeFromSuperview()
+            self.timelineNavController.didMoveToParentViewController(nil)
         }
     }
     
@@ -122,6 +140,20 @@ class ContainerViewController: UIViewController, TimelineViewControllerDelegate 
                 closeMenu()
             }
         }
+    }
+    
+    // MARK: - MenuViewControllerDelegate
+    func didSelectProfile() {
+        
+    }
+    
+    func didSelectHomeTimeline() {
+        addTimelineNavController()
+        closeMenu()
+    }
+    
+    func didSelectMentions() {
+        
     }
     
     /*
