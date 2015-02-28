@@ -41,27 +41,20 @@ class ContainerViewController: UIViewController, MenuViewControllerDelegate {
         var storyBoard = UIStoryboard(name: "Main", bundle: nil)
         menuNavController = storyBoard.instantiateViewControllerWithIdentifier("MenuNavController") as! UINavigationController
         menuViewController = menuNavController.topViewController as! MenuViewController
+        menuViewController.delegate = self
+        
         timelineNavController = storyBoard.instantiateViewControllerWithIdentifier("TimelineNavController") as! UINavigationController
         timelineViewController = timelineNavController.topViewController as! TimelineViewController
+        
         profileViewController = storyBoard.instantiateViewControllerWithIdentifier("ProfileViewController") as! ProfileViewController
         profileViewController.user = User.currentUser!
         profileNavController = UINavigationController(rootViewController: profileViewController)
+        
         mentionsNavController = storyBoard.instantiateViewControllerWithIdentifier("TimelineNavController") as! UINavigationController
         mentionsViewController = mentionsNavController.topViewController as! TimelineViewController
         mentionsViewController.isHomeTimeline = false
         
-//        menuViewController = storyBoard.instantiateViewControllerWithIdentifier("MenuViewController") as! MenuViewController
-//        timelineViewController = storyBoard.instantiateViewControllerWithIdentifier("TimelineViewController") as! TimelineViewController
-//        timelineNavController = UINavigationController(rootViewController: menuViewController)
-//        menuNavController = UINavigationController(rootViewController: menuViewController)
-        
-        menuViewController.delegate = self
-        
-        self.addChildViewController(timelineNavController)
-        self.timelineNavController.view.frame = self.view.frame
-        self.view.addSubview(timelineNavController.view)
-        self.timelineNavController.didMoveToParentViewController(self)
-        self.currentNavController = timelineNavController
+        addTimelineNavController()
         
         let timelineViewPanGestureRecognizer = UIPanGestureRecognizer(target: self, action: "handlePanGesture:")
         timelineNavController.view.addGestureRecognizer(timelineViewPanGestureRecognizer)
@@ -150,7 +143,11 @@ class ContainerViewController: UIViewController, MenuViewControllerDelegate {
             self.addChildViewController(timelineNavController)
             self.view.addSubview(timelineNavController.view)
             self.timelineNavController.didMoveToParentViewController(self)
-            self.timelineNavController.view.frame = self.currentNavController.view.frame
+            if self.currentNavController != nil {
+                self.timelineNavController.view.frame = self.currentNavController.view.frame
+            } else {
+                self.timelineNavController.view.frame = self.view.frame // this is the initial load case when none of the nav controller has been loaded to the scene yet
+            }
             self.currentNavController = timelineNavController
         }
     }
