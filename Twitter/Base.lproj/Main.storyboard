@@ -1027,6 +1027,10 @@
                                         </connections>
                                     </tableViewCell>
                                 </prototypes>
+                                <connections>
+                                    <outlet property="dataSource" destination="R6s-mX-eFK" id="pBI-Ce-dUy"/>
+                                    <outlet property="delegate" destination="R6s-mX-eFK" id="C1W-2I-sJ8"/>
+                                </connections>
                             </tableView>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
@@ -1491,7 +1495,7 @@
         <simulatedScreenMetrics key="destination" type="retina4"/>
     </simulatedMetricsContainer>
     <inferredMetricsTieBreakers>
-        <segue reference="5r3-Vq-n0N"/>
-        <segue reference="L9e-oi-8qe"/>
+        <segue reference="Pdf-Ny-oJb"/>
+        <segue reference="teV-82-LkJ"/>
     </inferredMetricsTieBreakers>
 </document>
