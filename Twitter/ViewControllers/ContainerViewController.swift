@@ -22,7 +22,9 @@ class ContainerViewController: UIViewController, MenuViewControllerDelegate {
     var profileNavController: UINavigationController!
     var mentionsNavController: UINavigationController!
     
-    var timelineViewOriginalCenter: CGPoint!
+    var currentNavController: UINavigationController!
+    
+    var currentNavControllerOriginalCenter: CGPoint!
     
     required init(coder aDecoder: NSCoder) {
         super.init(coder: aDecoder)
@@ -59,11 +61,14 @@ class ContainerViewController: UIViewController, MenuViewControllerDelegate {
         self.timelineNavController.view.frame = self.view.frame
         self.view.addSubview(timelineNavController.view)
         self.timelineNavController.didMoveToParentViewController(self)
+        self.currentNavController = timelineNavController
         
-        let panGestureRecognizer = UIPanGestureRecognizer(target: self, action: "handlePanGesture:")
-        timelineNavController.view.addGestureRecognizer(panGestureRecognizer)
-        mentionsNavController.view.addGestureRecognizer(panGestureRecognizer)
-        profileNavController.view.addGestureRecognizer(panGestureRecognizer)
+        let timelineViewPanGestureRecognizer = UIPanGestureRecognizer(target: self, action: "handlePanGesture:")
+        timelineNavController.view.addGestureRecognizer(timelineViewPanGestureRecognizer)
+        let profileViewPanGestureRecognizer = UIPanGestureRecognizer(target: self, action: "handlePanGesture:")
+        profileNavController.view.addGestureRecognizer(profileViewPanGestureRecognizer)
+        let mentionsViewPanGestureRecognizer = UIPanGestureRecognizer(target: self, action: "handlePanGesture:")
+        mentionsNavController.view.addGestureRecognizer(mentionsViewPanGestureRecognizer)
         
         NSNotificationCenter.defaultCenter().addObserver(self, selector: "showHideMenu", name: menuTappedNotification, object: nil)
     }
@@ -79,22 +84,48 @@ class ContainerViewController: UIViewController, MenuViewControllerDelegate {
     
     func showHideMenu(){
         if (menuRevealed == false){
-            addMenuNavController()
             revealMenu()
-            timelineViewController.tweetsTable.userInteractionEnabled = false
-
-//            self.transitionFromViewController(self, toViewController: self.menuViewController, duration: 0.5, options: nil, animations: { () -> Void in
-//                self.menuViewController.view.frame = self.view.frame
-//                self.view!.center = CGPointMake(self.view!.center.x + self.screenWidth! - self.screenWidth! / 6, self.view!.center.y)
-//            }, completion: { (finished) -> Void in
-//                self.menuViewController?.didMoveToParentViewController(self)
-//                ();
-//            })
-
         } else {
             closeMenu()
-            timelineViewController.tweetsTable.userInteractionEnabled = true
         }
+    }
+    
+    func revealMenu() {
+        addMenuNavController()
+        UIView.animateWithDuration(0.3, animations: { () -> Void in
+            self.currentNavController!.view.frame.origin.x = CGRectGetWidth(self.currentNavController.view.frame) - CGFloat(60)
+            }, completion: { (finished) -> Void in
+                if (finished){
+                    self.disableTableViewInteraction()
+                    self.menuRevealed = true
+                }
+            }
+        )
+    }
+    
+    func closeMenu() {
+        UIView.animateWithDuration(0.3, animations: { () -> Void in
+            self.currentNavController!.view.frame.origin.x = 0
+            }, completion: { (finished) -> Void in
+                if (finished){
+                    self.removeMenuNavController()
+                    self.enableTableViewInteraction()
+                    self.menuRevealed = false
+                }
+            }
+        )
+    }
+    
+    func disableTableViewInteraction() {
+        timelineViewController.tweetsTable?.userInteractionEnabled = false
+        mentionsViewController.tweetsTable?.userInteractionEnabled = false
+        profileViewController.profileTableView?.userInteractionEnabled = false
+    }
+    
+    func enableTableViewInteraction(){
+        timelineViewController.tweetsTable?.userInteractionEnabled = true
+        mentionsViewController.tweetsTable?.userInteractionEnabled = true
+        profileViewController.profileTableView?.userInteractionEnabled = true
     }
     
     func addMenuNavController() {
@@ -119,6 +150,8 @@ class ContainerViewController: UIViewController, MenuViewControllerDelegate {
             self.addChildViewController(timelineNavController)
             self.view.addSubview(timelineNavController.view)
             self.timelineNavController.didMoveToParentViewController(self)
+            self.timelineNavController.view.frame = self.currentNavController.view.frame
+            self.currentNavController = timelineNavController
         }
     }
     
@@ -135,6 +168,8 @@ class ContainerViewController: UIViewController, MenuViewControllerDelegate {
             self.addChildViewController(profileNavController)
             self.view.addSubview(profileNavController.view)
             self.profileNavController.didMoveToParentViewController(self)
+            self.profileNavController.view.frame = self.currentNavController.view.frame
+            self.currentNavController = profileNavController
         }
     }
     
@@ -151,6 +186,8 @@ class ContainerViewController: UIViewController, MenuViewControllerDelegate {
             self.addChildViewController(mentionsNavController)
             self.view.addSubview(mentionsNavController.view)
             self.mentionsNavController.didMoveToParentViewController(self)
+            self.mentionsNavController.view.frame = self.currentNavController.view.frame
+            self.currentNavController = mentionsNavController
         }
     }
     
@@ -162,34 +199,15 @@ class ContainerViewController: UIViewController, MenuViewControllerDelegate {
         }
     }
     
-    func revealMenu() {
-        UIView.animateWithDuration(0.3, animations: { () -> Void in
-            self.timelineNavController!.view.frame.origin.x = CGRectGetWidth(self.timelineNavController.view.frame) - CGFloat(60)
-        })
-        menuRevealed = true
-    }
-    
-    func closeMenu() {
-        UIView.animateWithDuration(0.3, animations: { () -> Void in
-            self.timelineNavController!.view.frame.origin.x = 0
-            }, completion: { (finished) -> Void in
-                if (finished){
-                    self.removeMenuNavController()
-                }
-            }
-        )
-        menuRevealed = false
-    }
-    
     func handlePanGesture(recognizer: UIPanGestureRecognizer){
         let panLeftToRight = recognizer.velocityInView(view).x > 0
         var translation = recognizer.translationInView(view)
         println("panLeftToRight: \(panLeftToRight), translation: \(translation)")
         if recognizer.state == UIGestureRecognizerState.Began {
             addMenuNavController()
-            timelineViewOriginalCenter = timelineNavController.view.center
+            currentNavControllerOriginalCenter = currentNavController.view.center
         } else if recognizer.state == UIGestureRecognizerState.Changed {
-            timelineNavController.view.center = CGPoint(x: timelineViewOriginalCenter.x + translation.x, y: timelineViewOriginalCenter.y)
+            currentNavController.view.center = CGPoint(x: currentNavControllerOriginalCenter.x + translation.x, y: currentNavControllerOriginalCenter.y)
         } else if recognizer.state == UIGestureRecognizerState.Ended {
             if panLeftToRight {
                 revealMenu()
@@ -202,16 +220,22 @@ class ContainerViewController: UIViewController, MenuViewControllerDelegate {
     // MARK: - MenuViewControllerDelegate
     func didSelectProfile() {
         addPofileNavController()
+        removeMentionsNavController()
+        removeTimelineNavController()
         closeMenu()
     }
     
     func didSelectHomeTimeline() {
         addTimelineNavController()
+        removeProfileNavController()
+        removeMentionsNavController()
         closeMenu()
     }
     
     func didSelectMentions() {
         addMentionsNavController()
+        removeTimelineNavController()
+        removeProfileNavController()
         closeMenu()
     }
     

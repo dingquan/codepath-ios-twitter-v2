@@ -72,15 +72,7 @@ class TimelineViewController: UIViewController, UITableViewDataSource, UITableVi
         refreshControl.addTarget(self, action: "refreshTimeline", forControlEvents: UIControlEvents.ValueChanged)
         self.tweetsTable.insertSubview(refreshControl, atIndex: 0)
         
-        // Do any additional setup after loading the view.
-        User.currentUser?.homeTimelineWithCompletion(minId, maxId: nil, completion: { (tweets, error) -> () in
-            if tweets != nil {
-                self.tweets = tweets
-                self.tweetsTable.reloadData()
-            } else {
-                println(error)
-            }
-        })
+        fetchMoreTimeline()
     }
     
     override func didReceiveMemoryWarning() {
@@ -178,10 +170,10 @@ class TimelineViewController: UIViewController, UITableViewDataSource, UITableVi
         } else {
             User.currentUser!.mentionsTimelineWithCompletion({(tweets, error) -> Void in
                 if tweets != nil {
-                self.tweets! += tweets!
-                self.tweetsTable.reloadData()
+                    self.tweets! = tweets!
+                    self.tweetsTable.reloadData()
                 } else {
-                println(error)
+                    println(error)
                 }
                 self.tweetsTable.infiniteScrollingView.stopAnimating()
             })
