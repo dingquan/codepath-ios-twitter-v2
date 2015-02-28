@@ -14,6 +14,8 @@ class MentionsViewController: UIViewController {
         super.viewDidLoad()
 
         // Do any additional setup after loading the view.
+        self.navigationController?.navigationBar.tintColor = UIColor.whiteColor()
+        self.navigationController?.navigationBar.barStyle = UIBarStyle.Black
     }
 
     override func didReceiveMemoryWarning() {
@@ -21,6 +23,9 @@ class MentionsViewController: UIViewController {
         // Dispose of any resources that can be recreated.
     }
     
+    @IBAction func onMenu(sender: UIBarButtonItem) {
+        NSNotificationCenter.defaultCenter().postNotificationName(menuTappedNotification, object: self)
+    }
 
     /*
     // MARK: - Navigation

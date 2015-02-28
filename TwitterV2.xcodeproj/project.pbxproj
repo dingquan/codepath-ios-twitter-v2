@@ -26,6 +26,7 @@
 		463722DB1A9FF8EF0048BD41 /* ContainerViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 463722DA1A9FF8EF0048BD41 /* ContainerViewController.swift */; };
 		463722DD1AA002610048BD41 /* ProfileViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 463722DC1AA002610048BD41 /* ProfileViewController.swift */; };
 		463722DF1AA003670048BD41 /* MentionsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 463722DE1AA003670048BD41 /* MentionsViewController.swift */; };
+		463722E11AA1688F0048BD41 /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 463722E01AA1688F0048BD41 /* QuartzCore.framework */; };
 		46496FD31A941AAD00F0F24C /* Tweet.swift in Sources */ = {isa = PBXBuildFile; fileRef = 46496FD21A941AAD00F0F24C /* Tweet.swift */; };
 		46496FD51A941AB700F0F24C /* User.swift in Sources */ = {isa = PBXBuildFile; fileRef = 46496FD41A941AB700F0F24C /* User.swift */; };
 		46496FD71A94604200F0F24C /* TimelineViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 46496FD61A94604200F0F24C /* TimelineViewController.swift */; };
@@ -73,6 +74,7 @@
 		463722DA1A9FF8EF0048BD41 /* ContainerViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ContainerViewController.swift; sourceTree = "<group>"; };
 		463722DC1AA002610048BD41 /* ProfileViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ProfileViewController.swift; sourceTree = "<group>"; };
 		463722DE1AA003670048BD41 /* MentionsViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MentionsViewController.swift; sourceTree = "<group>"; };
+		463722E01AA1688F0048BD41 /* QuartzCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QuartzCore.framework; path = System/Library/Frameworks/QuartzCore.framework; sourceTree = SDKROOT; };
 		46496FD21A941AAD00F0F24C /* Tweet.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Tweet.swift; sourceTree = "<group>"; };
 		46496FD41A941AB700F0F24C /* User.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = User.swift; sourceTree = "<group>"; };
 		46496FD61A94604200F0F24C /* TimelineViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TimelineViewController.swift; sourceTree = "<group>"; };
@@ -86,6 +88,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				463722E11AA1688F0048BD41 /* QuartzCore.framework in Frameworks */,
 				BEB772777A390D0D58B204DC /* libPods.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -221,6 +224,7 @@
 		7553BBF231DD37C1C4491A33 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				463722E01AA1688F0048BD41 /* QuartzCore.framework */,
 				00A8FE49EE5A57C587CC639B /* libPods.a */,
 			);
 			name = Frameworks;

@@ -68,8 +68,16 @@ class ImageTableViewCell: UITableViewCell, TTTAttributedLabelDelegate {
         self.selectionStyle = UITableViewCellSelectionStyle.None
         self.tweetBody.delegate = self
         self.tweetBody.enabledTextCheckingTypes = NSTextCheckingType.Link.rawValue
+        
+        var tapGestureRecognizer = UITapGestureRecognizer(target: self, action: "onProfileImageTap:")
+        self.profileImage.userInteractionEnabled = true
+        self.profileImage.addGestureRecognizer(tapGestureRecognizer)
     }
 
+    func onProfileImageTap(gestureRecognizer: UITapGestureRecognizer) {
+        delegate?.profileImageTapped(self.tweet!, forCell: self)
+    }
+    
     override func setSelected(selected: Bool, animated: Bool) {
         super.setSelected(selected, animated: animated)
 

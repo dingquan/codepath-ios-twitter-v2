@@ -11,6 +11,7 @@ import UIKit
 protocol TweetTableViewCellDelegate : class {
     func replyTweetFromTableViewCell(tweet: Tweet)
     func tweetUpdated(tweet: Tweet, forCell: UITableViewCell)
+    func profileImageTapped(tweet: Tweet, forCell: UITableViewCell)
 }
 
 class TextTableViewCell: UITableViewCell, TTTAttributedLabelDelegate {
@@ -80,8 +81,16 @@ class TextTableViewCell: UITableViewCell, TTTAttributedLabelDelegate {
         self.selectionStyle = UITableViewCellSelectionStyle.None
         self.tweetBody.delegate = self
         self.tweetBody.enabledTextCheckingTypes = NSTextCheckingType.Link.rawValue
+        
+        var tapGestureRecognizer = UITapGestureRecognizer(target: self, action: "onProfileImageTap:")
+        self.profileImage.userInteractionEnabled = true
+        self.profileImage.addGestureRecognizer(tapGestureRecognizer)
     }
 
+    func onProfileImageTap(gestureRecognizer: UITapGestureRecognizer) {
+        delegate?.profileImageTapped(self.tweet!, forCell: self)
+    }
+    
     override func setSelected(selected: Bool, animated: Bool) {
         super.setSelected(selected, animated: animated)
 

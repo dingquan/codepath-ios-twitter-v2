@@ -8,13 +8,17 @@
 
 import UIKit
 
-class ContainerViewController: UIViewController, TimelineViewControllerDelegate, MenuViewControllerDelegate {
+let menuTappedNotification = "menuTappedNotification"
+
+class ContainerViewController: UIViewController, MenuViewControllerDelegate {
     var menuRevealed: Bool!
     
     var timelineViewController: TimelineViewController!
     var menuViewController: MenuViewController!
     var timelineNavController: UINavigationController!
     var menuNavController: UINavigationController!
+    var profileViewController: ProfileViewController!
+    var mentionsViewController: MentionsViewController!
     
     var timelineViewOriginalCenter: CGPoint!
     
@@ -27,17 +31,22 @@ class ContainerViewController: UIViewController, TimelineViewControllerDelegate,
         super.viewDidLoad()
 
         // Do any additional setup after loading the view.
+        self.navigationController?.navigationBar.tintColor = UIColor.whiteColor()
+        self.navigationController?.navigationBar.barStyle = UIBarStyle.Black
+        
         var storyBoard = UIStoryboard(name: "Main", bundle: nil)
         menuNavController = storyBoard.instantiateViewControllerWithIdentifier("MenuNavController") as! UINavigationController
         menuViewController = menuNavController.topViewController as! MenuViewController
         timelineNavController = storyBoard.instantiateViewControllerWithIdentifier("TimelineNavController") as! UINavigationController
         timelineViewController = timelineNavController.topViewController as! TimelineViewController
+        profileViewController = storyBoard.instantiateViewControllerWithIdentifier("ProfileViewController") as! ProfileViewController
+        mentionsViewController = storyBoard.instantiateViewControllerWithIdentifier("MentionsViewController") as! MentionsViewController
+        
 //        menuViewController = storyBoard.instantiateViewControllerWithIdentifier("MenuViewController") as! MenuViewController
 //        timelineViewController = storyBoard.instantiateViewControllerWithIdentifier("TimelineViewController") as! TimelineViewController
 //        timelineNavController = UINavigationController(rootViewController: menuViewController)
 //        menuNavController = UINavigationController(rootViewController: menuViewController)
         
-        timelineViewController.delegate = self
         menuViewController.delegate = self
         
         self.addChildViewController(timelineNavController)
@@ -47,6 +56,8 @@ class ContainerViewController: UIViewController, TimelineViewControllerDelegate,
         
         let panGestureRecognizer = UIPanGestureRecognizer(target: self, action: "handlePanGesture:")
         timelineNavController.view.addGestureRecognizer(panGestureRecognizer)
+        
+        NSNotificationCenter.defaultCenter().addObserver(self, selector: "showHideMenu", name: menuTappedNotification, object: nil)
     }
 
     override func didReceiveMemoryWarning() {
@@ -54,10 +65,15 @@ class ContainerViewController: UIViewController, TimelineViewControllerDelegate,
         // Dispose of any resources that can be recreated.
     }
     
+    override func preferredStatusBarStyle() -> UIStatusBarStyle {
+        return UIStatusBarStyle.LightContent
+    }
+    
     func showHideMenu(){
         if (menuRevealed == false){
             addMenuNavController()
             revealMenu()
+            timelineViewController.tweetsTable.userInteractionEnabled = false
 
 //            self.transitionFromViewController(self, toViewController: self.menuViewController, duration: 0.5, options: nil, animations: { () -> Void in
 //                self.menuViewController.view.frame = self.view.frame
@@ -69,6 +85,7 @@ class ContainerViewController: UIViewController, TimelineViewControllerDelegate,
 
         } else {
             closeMenu()
+            timelineViewController.tweetsTable.userInteractionEnabled = true
         }
     }
     
@@ -103,6 +120,14 @@ class ContainerViewController: UIViewController, TimelineViewControllerDelegate,
             self.timelineNavController.view.removeFromSuperview()
             self.timelineNavController.didMoveToParentViewController(nil)
         }
+    }
+    
+    func addPofileViewController() {
+        
+    }
+    
+    func removeProfileViewController() {
+        
     }
     
     func revealMenu() {

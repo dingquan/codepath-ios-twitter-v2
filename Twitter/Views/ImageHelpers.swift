@@ -26,4 +26,11 @@ class ImageHelpers {
         imageView.layer.cornerRadius = 5
         imageView.clipsToBounds = true
     }
+    
+    class func roundedCornerWithBoarder(imageView: UIImageView) -> Void {
+        imageView.layer.cornerRadius = 5
+        imageView.layer.borderColor = UIColor.whiteColor().CGColor;
+        imageView.layer.borderWidth = 2;
+        imageView.clipsToBounds = true
+    }
 }

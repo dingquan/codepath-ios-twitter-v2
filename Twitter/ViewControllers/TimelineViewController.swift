@@ -8,16 +8,10 @@
 
 import UIKit
 
-protocol TimelineViewControllerDelegate {
-    func showHideMenu();
-}
-
 class TimelineViewController: UIViewController, UITableViewDataSource, UITableViewDelegate, TweetTableViewCellDelegate {
     var tweets: [Tweet]!
     var minId: UInt64!
     var maxId: UInt64!
-    
-    var delegate: TimelineViewControllerDelegate?
     
     var refreshControl: UIRefreshControl!
     var tweet: Tweet? { // to hold the newly composed tweet from NewTweetViewController
@@ -40,7 +34,7 @@ class TimelineViewController: UIViewController, UITableViewDataSource, UITableVi
 
     
     @IBAction func onMenu(sender: UIBarButtonItem) {
-        delegate?.showHideMenu()
+        NSNotificationCenter.defaultCenter().postNotificationName(menuTappedNotification, object: self)
     }
     
     override func viewDidLoad() {
@@ -101,9 +95,11 @@ class TimelineViewController: UIViewController, UITableViewDataSource, UITableVi
         var cell:UITableViewCell
         if tweet.imageUrl == nil {
             cell = tableView.dequeueReusableCellWithIdentifier("textCell", forIndexPath: indexPath) as! TextTableViewCell
+            (cell as! TextTableViewCell).delegate = self
             (cell as! TextTableViewCell).tweet = tweet
         } else {
             cell = tableView.dequeueReusableCellWithIdentifier("imageCell", forIndexPath: indexPath) as! ImageTableViewCell
+            (cell as! ImageTableViewCell).delegate = self
             (cell as! ImageTableViewCell).tweet = tweet
         }
 
@@ -138,8 +134,28 @@ class TimelineViewController: UIViewController, UITableViewDataSource, UITableVi
         } else if segue.identifier == "replyTweetFromTimeline" {
             let newTweetVC = segue.destinationViewController as! NewTweetViewController
             newTweetVC.inReplyToTweet = sender as? Tweet
+        } else if segue.identifier == "showProfile" {
+            let profileVC = segue.destinationViewController as! ProfileViewController
+             profileVC.user = (sender as? Tweet)!.user
         }
     }
+
+    // NOTE: doesn't work, returns random indexPath for some reason
+//    func indexPathForCellContainingView(inputView: UIView) -> NSIndexPath? {
+//        var view:UIView = inputView
+//        while true {
+//            if let cell = view as? UITableViewCell {
+//                return tweetsTable.indexPathForCell(cell)!
+//            } else {
+//                if (view.superview != nil) {
+//                    view = view.superview!
+//                } else {
+//                    break;
+//                }
+//            }
+//        }
+//        return nil
+//    }
     
     private func fetchMoreTimeline() -> Void {
         findMinMaxId()
@@ -204,6 +220,8 @@ class TimelineViewController: UIViewController, UITableViewDataSource, UITableVi
         self.tweetsTable.reloadRowsAtIndexPaths([indexPath], withRowAnimation: UITableViewRowAnimation.None)
     }
     
+    // MARK: - TweetTableViewCellDelegate functions
+    
     func replyTweetFromTableViewCell(tweet: Tweet) {
         self.performSegueWithIdentifier("replyTweetFromTimeline", sender: tweet)
     }
@@ -212,6 +230,12 @@ class TimelineViewController: UIViewController, UITableViewDataSource, UITableVi
         let indexPath:NSIndexPath = self.tweetsTable.indexPathForCell(forCell)!
         self.tweets[indexPath.row] = tweet
         self.tweetsTable.reloadRowsAtIndexPaths([indexPath], withRowAnimation: UITableViewRowAnimation.None)
+    }
+    
+    func profileImageTapped(tweet: Tweet, forCell: UITableViewCell) {
+        let indexPath:NSIndexPath = self.tweetsTable.indexPathForCell(forCell)!
+        self.tweets[indexPath.row] = tweet
+        self.performSegueWithIdentifier("showProfile", sender: tweet)
     }
     
     /*

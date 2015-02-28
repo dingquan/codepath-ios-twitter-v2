@@ -19,6 +19,12 @@ class User {
     var profileImageUrl: String?
     var tagLine: String?
     var id: UInt64?
+    var description: String?
+    var bannerImageUrl: String?
+    var backgroundColor: UInt?
+    var numFollowers: UInt?
+    var numFollowing: UInt?
+    var numTweets: UInt?
     var dictionary: NSDictionary
     
     init(dictionary: NSDictionary){
@@ -28,6 +34,12 @@ class User {
         self.profileImageUrl = dictionary["profile_image_url"] as? String
         self.tagLine = dictionary["description"] as? String
         self.id = (dictionary["id"] as! NSNumber).unsignedLongLongValue
+        self.description = dictionary["description"] as? String
+        self.bannerImageUrl = dictionary["profile_banner_url"] as? String
+        self.backgroundColor = dictionary["profile_background_color"] as? UInt
+        self.numFollowers = dictionary["followers_count"] as? UInt
+        self.numFollowing = dictionary["friends_count"] as? UInt
+        self.numTweets = dictionary["statuses_count"] as? UInt
     }
     
     class var currentUser: User? {
@@ -102,4 +114,11 @@ class User {
             completion(tweet: tweet, error: error)
         })
     }
+    
+    class func userTimelineWithCompletion(userId: UInt64, completion: (tweets: [Tweet]?, error: NSError?) -> Void){
+        TwitterClient.sharedInstance.userTimelineWithCompletion(userId, completion: { (tweets, error) -> () in
+            completion(tweets: tweets, error: error)
+        })
+    }
+
 }
