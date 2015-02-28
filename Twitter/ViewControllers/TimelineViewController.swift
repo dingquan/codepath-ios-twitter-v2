@@ -12,6 +12,7 @@ class TimelineViewController: UIViewController, UITableViewDataSource, UITableVi
     var tweets: [Tweet]!
     var minId: UInt64!
     var maxId: UInt64!
+    var isHomeTimeline: Bool!
     
     var refreshControl: UIRefreshControl!
     var tweet: Tweet? { // to hold the newly composed tweet from NewTweetViewController
@@ -28,6 +29,7 @@ class TimelineViewController: UIViewController, UITableViewDataSource, UITableVi
         minId = UINT64_MAX
         maxId = 1 as UInt64
         tweets = [Tweet]()
+        isHomeTimeline = true
     }
     
     @IBOutlet weak var tweetsTable: UITableView!
@@ -42,6 +44,10 @@ class TimelineViewController: UIViewController, UITableViewDataSource, UITableVi
 
         self.navigationController?.navigationBar.tintColor = UIColor.whiteColor()
         self.navigationController?.navigationBar.barStyle = UIBarStyle.Black
+        
+        if isHomeTimeline == false {
+            self.navigationItem.title = "@Mentions"
+        }
         
         NSNotificationCenter.defaultCenter().addObserver(self, selector: "updateTweetTableWithNewTweet:", name: newTweetCreatedNotification, object: nil)
         
@@ -136,7 +142,7 @@ class TimelineViewController: UIViewController, UITableViewDataSource, UITableVi
             newTweetVC.inReplyToTweet = sender as? Tweet
         } else if segue.identifier == "showProfile" {
             let profileVC = segue.destinationViewController as! ProfileViewController
-             profileVC.user = (sender as? Tweet)!.user
+            profileVC.user = (sender as? Tweet)!.user
         }
     }
 
@@ -158,33 +164,50 @@ class TimelineViewController: UIViewController, UITableViewDataSource, UITableVi
 //    }
     
     private func fetchMoreTimeline() -> Void {
-        findMinMaxId()
-        User.currentUser!.homeTimelineWithCompletion(minId, maxId: nil, completion: { (tweets, error) -> Void in
-            if tweets != nil {
+        if isHomeTimeline! {
+            findMinMaxId()
+            User.currentUser!.homeTimelineWithCompletion(minId, maxId: nil, completion: { (tweets, error) -> Void in
+                if tweets != nil {
+                    self.tweets! += tweets!
+                    self.tweetsTable.reloadData()
+                } else {
+                    println(error)
+                }
+                self.tweetsTable.infiniteScrollingView.stopAnimating()
+            })
+        } else {
+            User.currentUser!.mentionsTimelineWithCompletion({(tweets, error) -> Void in
+                if tweets != nil {
                 self.tweets! += tweets!
                 self.tweetsTable.reloadData()
-            } else {
+                } else {
                 println(error)
-            }
-            self.tweetsTable.infiniteScrollingView.stopAnimating()
-        })
+                }
+                self.tweetsTable.infiniteScrollingView.stopAnimating()
+            })
+
+        }
     }
     
     func refreshTimeline() {
-        findMinMaxId()
-        User.currentUser!.homeTimelineWithCompletion(nil, maxId: maxId, completion: { (tweets, error) -> Void in
-            var newTweets = [Tweet]()
-            if tweets != nil {
-                newTweets += tweets!
-                newTweets += self.tweets!
-                self.tweets = newTweets
-                self.tweetsTable.reloadData()
-            } else {
-                println(error)
-            }
-//            self.tweetsTable.pullToRefreshView.stopAnimating()
+        if isHomeTimeline! {
+            findMinMaxId()
+            User.currentUser!.homeTimelineWithCompletion(nil, maxId: maxId, completion: { (tweets, error) -> Void in
+                var newTweets = [Tweet]()
+                if tweets != nil {
+                    newTweets += tweets!
+                    newTweets += self.tweets!
+                    self.tweets = newTweets
+                    self.tweetsTable.reloadData()
+                } else {
+                    println(error)
+                }
+    //            self.tweetsTable.pullToRefreshView.stopAnimating()
+                self.refreshControl.endRefreshing()
+            })
+        } else {
             self.refreshControl.endRefreshing()
-        })
+        }
     }
     
     private func findMinMaxId() -> Void {

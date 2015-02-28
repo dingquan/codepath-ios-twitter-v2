@@ -85,6 +85,12 @@ class User {
         })
     }
     
+    func mentionsTimelineWithCompletion(completion: (tweets: [Tweet]?, error: NSError?) -> Void){
+        TwitterClient.sharedInstance.mentionsTimelineWithCompletion({ (tweets, error) -> () in
+            completion(tweets: tweets, error: error)
+        })
+    }
+    
     func postTweetWithCompletion(originalTweet: Tweet?, tweetText: String, completion: (tweet: Tweet?, error: NSError?) -> Void){
         TwitterClient.sharedInstance.postTweet(originalTweet, tweetText: tweetText, completion: { (tweet, error) -> () in
             completion(tweet: tweet, error: error)

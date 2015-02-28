@@ -15,10 +15,12 @@ class ContainerViewController: UIViewController, MenuViewControllerDelegate {
     
     var timelineViewController: TimelineViewController!
     var menuViewController: MenuViewController!
+    var profileViewController: ProfileViewController!
+    var mentionsViewController: TimelineViewController!
     var timelineNavController: UINavigationController!
     var menuNavController: UINavigationController!
-    var profileViewController: ProfileViewController!
-    var mentionsViewController: MentionsViewController!
+    var profileNavController: UINavigationController!
+    var mentionsNavController: UINavigationController!
     
     var timelineViewOriginalCenter: CGPoint!
     
@@ -40,7 +42,11 @@ class ContainerViewController: UIViewController, MenuViewControllerDelegate {
         timelineNavController = storyBoard.instantiateViewControllerWithIdentifier("TimelineNavController") as! UINavigationController
         timelineViewController = timelineNavController.topViewController as! TimelineViewController
         profileViewController = storyBoard.instantiateViewControllerWithIdentifier("ProfileViewController") as! ProfileViewController
-        mentionsViewController = storyBoard.instantiateViewControllerWithIdentifier("MentionsViewController") as! MentionsViewController
+        profileViewController.user = User.currentUser!
+        profileNavController = UINavigationController(rootViewController: profileViewController)
+        mentionsNavController = storyBoard.instantiateViewControllerWithIdentifier("TimelineNavController") as! UINavigationController
+        mentionsViewController = mentionsNavController.topViewController as! TimelineViewController
+        mentionsViewController.isHomeTimeline = false
         
 //        menuViewController = storyBoard.instantiateViewControllerWithIdentifier("MenuViewController") as! MenuViewController
 //        timelineViewController = storyBoard.instantiateViewControllerWithIdentifier("TimelineViewController") as! TimelineViewController
@@ -56,6 +62,8 @@ class ContainerViewController: UIViewController, MenuViewControllerDelegate {
         
         let panGestureRecognizer = UIPanGestureRecognizer(target: self, action: "handlePanGesture:")
         timelineNavController.view.addGestureRecognizer(panGestureRecognizer)
+        mentionsNavController.view.addGestureRecognizer(panGestureRecognizer)
+        profileNavController.view.addGestureRecognizer(panGestureRecognizer)
         
         NSNotificationCenter.defaultCenter().addObserver(self, selector: "showHideMenu", name: menuTappedNotification, object: nil)
     }
@@ -122,12 +130,36 @@ class ContainerViewController: UIViewController, MenuViewControllerDelegate {
         }
     }
     
-    func addPofileViewController() {
-        
+    func addPofileNavController() {
+        if profileNavController != nil {
+            self.addChildViewController(profileNavController)
+            self.view.addSubview(profileNavController.view)
+            self.profileNavController.didMoveToParentViewController(self)
+        }
     }
     
-    func removeProfileViewController() {
-        
+    func removeProfileNavController() {
+        if profileNavController != nil {
+            self.profileNavController.willMoveToParentViewController(nil)
+            self.profileNavController.view.removeFromSuperview()
+            self.profileNavController.didMoveToParentViewController(nil)
+        }
+    }
+    
+    func addMentionsNavController() {
+        if mentionsNavController != nil {
+            self.addChildViewController(mentionsNavController)
+            self.view.addSubview(mentionsNavController.view)
+            self.mentionsNavController.didMoveToParentViewController(self)
+        }
+    }
+    
+    func removeMentionsNavController() {
+        if mentionsNavController != nil {
+            self.mentionsNavController.willMoveToParentViewController(nil)
+            self.mentionsNavController.view.removeFromSuperview()
+            self.mentionsNavController.didMoveToParentViewController(nil)
+        }
     }
     
     func revealMenu() {
@@ -169,7 +201,8 @@ class ContainerViewController: UIViewController, MenuViewControllerDelegate {
     
     // MARK: - MenuViewControllerDelegate
     func didSelectProfile() {
-        
+        addPofileNavController()
+        closeMenu()
     }
     
     func didSelectHomeTimeline() {
@@ -178,7 +211,8 @@ class ContainerViewController: UIViewController, MenuViewControllerDelegate {
     }
     
     func didSelectMentions() {
-        
+        addMentionsNavController()
+        closeMenu()
     }
     
     /*
