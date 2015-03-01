@@ -8,7 +8,7 @@
 
 import UIKit
 
-class ProfileViewController: UIViewController, UITableViewDataSource, UITableViewDelegate, TweetTableViewCellDelegate {
+class ProfileViewController: UIViewController, UITableViewDataSource, UITableViewDelegate, UIScrollViewDelegate, TweetTableViewCellDelegate {
 
     @IBOutlet weak var profileTableView: UITableView!
     @IBOutlet weak var profileTableHeader: UIView!
@@ -19,6 +19,9 @@ class ProfileViewController: UIViewController, UITableViewDataSource, UITableVie
     @IBOutlet weak var profileDescription: UILabel!
     @IBOutlet weak var profileFollowingCnt: UILabel!
     @IBOutlet weak var profileFollowersCnt: UILabel!
+    
+    private let initialHeaderImageYOffset:CGFloat = -64
+    private let initialHeaderImageHeight:CGFloat = 106
     
     var user: User!
     var tweets: [Tweet]!
@@ -104,6 +107,18 @@ class ProfileViewController: UIViewController, UITableViewDataSource, UITableVie
     func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath){
         let tweet = self.tweets[indexPath.row]
         self.performSegueWithIdentifier("showDetailsFromProfile", sender: indexPath)
+    }
+    
+    func scrollViewDidScroll(scrollView: UIScrollView) {
+        println(scrollView.contentOffset);
+        var headerRect = CGRect(x: 0, y: initialHeaderImageYOffset, width: self.profileTableView.bounds.width, height: initialHeaderImageHeight)
+        
+        if scrollView.contentOffset.y < initialHeaderImageYOffset {
+            headerRect.origin.y = scrollView.contentOffset.y
+            headerRect.size.height = initialHeaderImageHeight + (-scrollView.contentOffset.y + initialHeaderImageYOffset)
+        }
+        profileBackgroundImage.frame = headerRect
+        println(headerRect)
     }
     
     override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
