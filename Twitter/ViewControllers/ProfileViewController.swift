@@ -22,6 +22,7 @@ class ProfileViewController: UIViewController, UITableViewDataSource, UITableVie
     
     private let initialHeaderImageYOffset:CGFloat = -64
     private let initialHeaderImageHeight:CGFloat = 106
+    private let stickyHeaderStartOffset:CGFloat = -22
     
     var user: User!
     var tweets: [Tweet]!
@@ -116,6 +117,9 @@ class ProfileViewController: UIViewController, UITableViewDataSource, UITableVie
         if scrollView.contentOffset.y < initialHeaderImageYOffset {
             headerRect.origin.y = scrollView.contentOffset.y
             headerRect.size.height = initialHeaderImageHeight + (-scrollView.contentOffset.y + initialHeaderImageYOffset)
+        } else if scrollView.contentOffset.y >= stickyHeaderStartOffset {
+            headerRect.origin.y = -stickyHeaderStartOffset + (scrollView.contentOffset.y + initialHeaderImageYOffset)
+            headerRect.size.height = initialHeaderImageHeight
         }
         profileBackgroundImage.frame = headerRect
         println(headerRect)
