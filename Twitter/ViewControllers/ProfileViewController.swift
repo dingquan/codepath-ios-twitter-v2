@@ -38,7 +38,7 @@ class ProfileViewController: UIViewController, UITableViewDataSource, UITableVie
         // Do any additional setup after loading the view.
 //        self.navigationController?.navigationBar.tintColor = UIColor.whiteColor()
 //        self.navigationController?.navigationBar.barStyle = UIBarStyle.BlackTranslucent
-        setNavigationBarTransparent()
+//        setNavigationBarTransparent()
         
         self.profileTableView.estimatedRowHeight = 260
         self.profileTableView.rowHeight = UITableViewAutomaticDimension
@@ -47,6 +47,9 @@ class ProfileViewController: UIViewController, UITableViewDataSource, UITableVie
         fetchMoreTimeline()
     }
 
+    override func viewWillAppear(animated: Bool) {
+        setNavigationBarTransparent()
+    }
     override func viewWillDisappear(animated: Bool) {
         restoreNavigationBarColor()
     }
@@ -107,6 +110,8 @@ class ProfileViewController: UIViewController, UITableViewDataSource, UITableVie
 
     func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath){
         let tweet = self.tweets[indexPath.row]
+        let cell = self.profileTableView.cellForRowAtIndexPath(indexPath)
+        cell?.selectionStyle = UITableViewCellSelectionStyle.None
         self.performSegueWithIdentifier("showDetailsFromProfile", sender: indexPath)
     }
     

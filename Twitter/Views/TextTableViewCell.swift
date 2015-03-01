@@ -78,7 +78,7 @@ class TextTableViewCell: UITableViewCell, TTTAttributedLabelDelegate {
     override func awakeFromNib() {
         super.awakeFromNib()
         // Initialization code
-        self.selectionStyle = UITableViewCellSelectionStyle.None
+//        self.selectionStyle = UITableViewCellSelectionStyle.None
         self.tweetBody.delegate = self
         self.tweetBody.enabledTextCheckingTypes = NSTextCheckingType.Link.rawValue
         
