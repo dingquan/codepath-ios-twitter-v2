@@ -2,7 +2,7 @@
 
 This is the enhanced version of my previous twitter app to read and compose tweets the [Twitter API](https://apps.twitter.com/).
 
-Time spent: 20+ hours I think
+Time spent: ~16 hours
 
 ### Features
 
@@ -23,16 +23,9 @@ Home Timeline
 #### Optional
 
 Profile page
-- [ ] Implement the paging view for the user description.
-- [ ] As the paging view moves, increase the opacity of the background screen. See the actual Twitter app for this effect
-- [ ] Pulling down the profile page should blur and resize the header image.
+- [x] Pulling down the profile page should blur and resize the header image.
 
-Account switching
-- [ ] Long press on tab bar to bring up Account view with animation
-- [ ] Tap account to switch to
-- [ ] Include a plus button to Add an Account
-- [ ] Swipe to delete an account
 
 ### Walkthrough
 
-![Video Walkthrough](twitter.gif)
+![Video Walkthrough](twitterV2.gif)
