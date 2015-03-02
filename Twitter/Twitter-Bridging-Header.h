@@ -9,3 +9,4 @@
 //#import <UIScrollView+SVPullToRefresh.h>
 #import "NSDate+DateTools.h"
 #import "TTTAttributedLabel.h"
+#import "UIImage+ImageEffects.h"

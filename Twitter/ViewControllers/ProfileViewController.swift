@@ -19,10 +19,15 @@ class ProfileViewController: UIViewController, UITableViewDataSource, UITableVie
     @IBOutlet weak var profileDescription: UILabel!
     @IBOutlet weak var profileFollowingCnt: UILabel!
     @IBOutlet weak var profileFollowersCnt: UILabel!
-    
+
     private let initialHeaderImageYOffset:CGFloat = -64
     private let initialHeaderImageHeight:CGFloat = 106
     private let stickyHeaderStartOffset:CGFloat = -22
+    private let blurBackgroundStartOffset:CGFloat = 36
+    private let blurBackgroundEndOffset:CGFloat = 65
+    
+    private var blurImageView:UIImageView!
+    private var stickyHeaderView:UIImageView?
     
     var user: User!
     var tweets: [Tweet]!
@@ -45,6 +50,16 @@ class ProfileViewController: UIViewController, UITableViewDataSource, UITableVie
         
         showProfileHeaderView()
         fetchMoreTimeline()
+    }
+    
+    func captureAndAddBlurImageBackground() {
+        println("capture image background")
+        self.blurImageView = UIImageView(frame: self.profileBackgroundImage.frame)
+        self.blurImageView.image = self.profileBackgroundImage.image!.applyBlurWithRadius(12, tintColor: UIColor(white:0.8, alpha:0.4), saturationDeltaFactor: 1.8, maskImage: nil)
+        self.blurImageView.autoresizingMask = UIViewAutoresizing.FlexibleWidth | UIViewAutoresizing.FlexibleHeight
+        self.blurImageView.alpha = 0
+        self.blurImageView.backgroundColor = UIColor.clearColor()
+        self.profileTableHeader.addSubview(blurImageView)
     }
 
     override func viewWillAppear(animated: Bool) {
@@ -110,23 +125,69 @@ class ProfileViewController: UIViewController, UITableViewDataSource, UITableVie
 
     func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath){
         let tweet = self.tweets[indexPath.row]
-        let cell = self.profileTableView.cellForRowAtIndexPath(indexPath)
-        cell?.selectionStyle = UITableViewCellSelectionStyle.None
+        self.profileTableView.deselectRowAtIndexPath(indexPath, animated: true)
+//        let cell = self.profileTableView.cellForRowAtIndexPath(indexPath)
+//        cell?.selectionStyle = UITableViewCellSelectionStyle.None
         self.performSegueWithIdentifier("showDetailsFromProfile", sender: indexPath)
     }
     
     func scrollViewDidScroll(scrollView: UIScrollView) {
+        print("contentOffset: " )
         println(scrollView.contentOffset);
         var headerRect = CGRect(x: 0, y: initialHeaderImageYOffset, width: self.profileTableView.bounds.width, height: initialHeaderImageHeight)
+        let yOffset = scrollView.contentOffset.y
         
-        if scrollView.contentOffset.y < initialHeaderImageYOffset {
-            headerRect.origin.y = scrollView.contentOffset.y
-            headerRect.size.height = initialHeaderImageHeight + (-scrollView.contentOffset.y + initialHeaderImageYOffset)
-        } else if scrollView.contentOffset.y >= stickyHeaderStartOffset {
-            headerRect.origin.y = -stickyHeaderStartOffset + (scrollView.contentOffset.y + initialHeaderImageYOffset)
-            headerRect.size.height = initialHeaderImageHeight
+        if yOffset < initialHeaderImageYOffset {
+            //parallax effect when pulling down the banner image
+            headerRect.origin.y = yOffset
+            headerRect.size.height = initialHeaderImageHeight + (-yOffset + initialHeaderImageYOffset)
+        } else {
+            if yOffset >= stickyHeaderStartOffset {
+//                if stickyHeaderView == nil {
+//                    self.stickyHeaderView = UIImageView(frame: self.profileBackgroundImage.frame)
+//                    self.stickyHeaderView!.image = self.profileBackgroundImage.image!
+//                    self.stickyHeaderView!.autoresizingMask = UIViewAutoresizing.FlexibleWidth | UIViewAutoresizing.FlexibleHeight
+//                    self.stickyHeaderView!.backgroundColor = UIColor.clearColor()
+//                }
+                headerRect.origin.y = -stickyHeaderStartOffset + (yOffset + initialHeaderImageYOffset)
+                headerRect.size.height = initialHeaderImageHeight
+                
+//                self.stickyHeaderView?.frame = headerRect
+//                self.profileTableHeader.insertSubview(stickyHeaderView!, belowSubview: self.blurImageView)
+                
+                if (user.bannerImageUrl != nil) {
+                    if (yOffset >= blurBackgroundStartOffset) {
+                        // blur the background image
+                        self.blurImageView?.frame = headerRect
+                        self.blurImageView?.alpha = min(1, (yOffset - blurBackgroundStartOffset) / (blurBackgroundEndOffset - blurBackgroundStartOffset))
+                        println("alpha: \(self.blurImageView.alpha)")
+                        //                self.profileBackgroundImage.image = self.profileBackgroundImage.image!.applyLightEffect() // NOTE: doesn't like the effect
+                        //NOTE: effect is not what I want
+                        //                var visualEffectView = UIVisualEffectView(effect: UIBlurEffect(style: .Light)) as UIVisualEffectView
+                        //                visualEffectView.frame = self.profileBackgroundImage.bounds
+                        //                self.profileBackgroundImage.addSubview(visualEffectView)
+                    } else {
+                        self.blurImageView?.alpha = 0 // hide the blur background image
+                        
+                    }
+                }
+            } else {
+//                self.stickyHeaderView?.removeFromSuperview()
+//                self.stickyHeaderView = nil
+                
+                // shrink the profile image (yOffset from -64 to -20, image side length from 66 to 44
+                let oldHeight = self.profileImageView.frame.height
+                let oldY = self.profileImageView.center.y
+                let sideLength = CGFloat(66 - (yOffset + 64) / 2)
+                var profileImageRect = CGRect(x: self.profileImageView.center.x - sideLength / 2, y: (oldY + oldHeight/2) - sideLength, width: sideLength, height: sideLength)
+                println("sideLength: \(sideLength)")
+                print("profileImageRect: " )
+                println(profileImageRect)
+                self.profileImageView.frame = profileImageRect
+            }
         }
         profileBackgroundImage.frame = headerRect
+        print("headerRect: " )
         println(headerRect)
     }
     
@@ -160,7 +221,10 @@ class ProfileViewController: UIViewController, UITableViewDataSource, UITableVie
                 .roundedCornerWithBoarder(self.profileImageView)
             ImageHelpers.fadeInImage(self.profileImageView, imgUrl: user.profileImageUrl)
             if let bannerImageUrl = user.bannerImageUrl {
-                ImageHelpers.fadeInImage(self.profileBackgroundImage, imgUrl: bannerImageUrl)
+//                ImageHelpers.fadeInImage(self.profileBackgroundImage, imgUrl: bannerImageUrl)
+                ImageHelpers.fadeInImageWithCompletion(self.profileBackgroundImage, imgUrl: bannerImageUrl, completion: { () -> () in
+                    self.captureAndAddBlurImageBackground()
+                })
             }
             
             self.profileName.text = user.name!

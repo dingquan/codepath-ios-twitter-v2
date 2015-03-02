@@ -119,8 +119,9 @@ class TimelineViewController: UIViewController, UITableViewDataSource, UITableVi
     
     func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath){
         let tweet = self.tweets[indexPath.row]
-        let cell = tweetsTable.cellForRowAtIndexPath(indexPath)
-        cell!.selectionStyle = UITableViewCellSelectionStyle.None
+        self.tweetsTable.deselectRowAtIndexPath(indexPath, animated: true)
+//        let cell = tweetsTable.cellForRowAtIndexPath(indexPath)
+//        cell!.selectionStyle = UITableViewCellSelectionStyle.None
         self.performSegueWithIdentifier("showTweetDetails", sender: indexPath)
     }
     

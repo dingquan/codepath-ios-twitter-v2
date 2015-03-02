@@ -69,8 +69,9 @@ class MenuViewController: UIViewController, UITableViewDataSource, UITableViewDe
     }
     
     func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
-        let cell = tableView.cellForRowAtIndexPath(indexPath)
-        cell?.selectionStyle = UITableViewCellSelectionStyle.None
+//        let cell = tableView.cellForRowAtIndexPath(indexPath)
+//        cell?.selectionStyle = UITableViewCellSelectionStyle.None
+        self.menuTable.deselectRowAtIndexPath(indexPath, animated: true)
         if indexPath.row == 0 {
             delegate?.didSelectProfile()
         } else if indexPath.row == 1 {

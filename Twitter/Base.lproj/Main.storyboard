@@ -501,7 +501,7 @@
                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="My Profile" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Goz-9R-m4R">
                                                     <rect key="frame" x="48" y="14" width="256" height="15"/>
                                                     <fontDescription key="fontDescription" type="system" pointSize="12"/>
-                                                    <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                                                    <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                                                     <nil key="highlightedColor"/>
                                                 </label>
                                             </subviews>
@@ -556,21 +556,6 @@
                                     <rect key="frame" x="0.0" y="64" width="320" height="220"/>
                                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                     <subviews>
-                                        <imageView userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="6FD-sE-xAP" userLabel="Background Image View">
-                                            <rect key="frame" x="0.0" y="-64" width="320" height="106"/>
-                                            <color key="backgroundColor" red="0.25490196079999999" green="0.59215686270000001" blue="0.92156862750000001" alpha="1" colorSpace="calibratedRGB"/>
-                                            <color key="tintColor" red="0.25490196079999999" green="0.59215686270000001" blue="0.92156862750000001" alpha="1" colorSpace="calibratedRGB"/>
-                                            <constraints>
-                                                <constraint firstAttribute="width" secondItem="6FD-sE-xAP" secondAttribute="height" multiplier="160:53" id="5VE-lm-s6l"/>
-                                            </constraints>
-                                        </imageView>
-                                        <imageView userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="KSv-yX-F3E" userLabel="Profile Image View">
-                                            <rect key="frame" x="12" y="20" width="66" height="66"/>
-                                            <constraints>
-                                                <constraint firstAttribute="height" constant="66" id="AcQ-Th-wrS"/>
-                                                <constraint firstAttribute="width" constant="66" id="Neb-dL-mjE"/>
-                                            </constraints>
-                                        </imageView>
                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="TechCrunch" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="yWF-Hb-UWc">
                                             <rect key="frame" x="12" y="98" width="296" height="17"/>
                                             <fontDescription key="fontDescription" type="boldSystem" pointSize="14"/>
@@ -652,6 +637,21 @@
                                                 <constraint firstAttribute="height" constant="1" id="qSo-PH-9lR"/>
                                             </constraints>
                                         </view>
+                                        <imageView userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="6FD-sE-xAP" userLabel="Background Image View">
+                                            <rect key="frame" x="0.0" y="-64" width="320" height="106"/>
+                                            <color key="backgroundColor" red="0.25490196079999999" green="0.59215686270000001" blue="0.92156862750000001" alpha="1" colorSpace="calibratedRGB"/>
+                                            <color key="tintColor" red="0.25490196079999999" green="0.59215686270000001" blue="0.92156862750000001" alpha="1" colorSpace="calibratedRGB"/>
+                                            <constraints>
+                                                <constraint firstAttribute="width" secondItem="6FD-sE-xAP" secondAttribute="height" multiplier="160:53" id="5VE-lm-s6l"/>
+                                            </constraints>
+                                        </imageView>
+                                        <imageView userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="KSv-yX-F3E" userLabel="Profile Image View">
+                                            <rect key="frame" x="12" y="20" width="66" height="66"/>
+                                            <constraints>
+                                                <constraint firstAttribute="height" constant="66" id="AcQ-Th-wrS"/>
+                                                <constraint firstAttribute="width" constant="66" id="Neb-dL-mjE"/>
+                                            </constraints>
+                                        </imageView>
                                     </subviews>
                                     <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                     <constraints>
@@ -671,10 +671,10 @@
                                         <constraint firstItem="WdK-hw-loE" firstAttribute="leading" secondItem="jsh-tF-7eA" secondAttribute="leading" constant="12" id="TWz-VA-Ifr"/>
                                         <constraint firstAttribute="trailing" secondItem="SeG-5h-JKU" secondAttribute="trailing" id="Thk-k2-P68"/>
                                         <constraint firstItem="Ck2-0z-iM3" firstAttribute="top" secondItem="5CP-h2-p6v" secondAttribute="bottom" id="WKl-7o-rTo"/>
-                                        <constraint firstItem="KSv-yX-F3E" firstAttribute="top" secondItem="jsh-tF-7eA" secondAttribute="top" constant="20" id="WO6-cs-R1i"/>
                                         <constraint firstItem="yWF-Hb-UWc" firstAttribute="top" secondItem="KSv-yX-F3E" secondAttribute="bottom" constant="12" id="Wi4-S3-7q1"/>
                                         <constraint firstItem="WdK-hw-loE" firstAttribute="top" secondItem="yWF-Hb-UWc" secondAttribute="bottom" constant="2" id="bPb-vY-ad0"/>
                                         <constraint firstItem="6FD-sE-xAP" firstAttribute="top" secondItem="jsh-tF-7eA" secondAttribute="top" constant="-64" id="bj1-hO-XMu"/>
+                                        <constraint firstItem="yWF-Hb-UWc" firstAttribute="top" secondItem="jsh-tF-7eA" secondAttribute="top" constant="98" id="cnf-dt-zTN"/>
                                         <constraint firstItem="SeG-5h-JKU" firstAttribute="leading" secondItem="jsh-tF-7eA" secondAttribute="leading" id="jrq-kL-eur"/>
                                         <constraint firstAttribute="trailing" secondItem="yWF-Hb-UWc" secondAttribute="trailing" constant="12" id="m2s-Ta-Cfp"/>
                                         <constraint firstItem="6FD-sE-xAP" firstAttribute="leading" secondItem="jsh-tF-7eA" secondAttribute="leading" id="mAa-jS-jpP"/>
