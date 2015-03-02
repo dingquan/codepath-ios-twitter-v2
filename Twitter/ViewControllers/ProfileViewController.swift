@@ -27,7 +27,6 @@ class ProfileViewController: UIViewController, UITableViewDataSource, UITableVie
     private let blurBackgroundEndOffset:CGFloat = 65
     
     private var blurImageView:UIImageView!
-    private var stickyHeaderView:UIImageView?
     
     var user: User!
     var tweets: [Tweet]!
@@ -143,17 +142,12 @@ class ProfileViewController: UIViewController, UITableViewDataSource, UITableVie
             headerRect.size.height = initialHeaderImageHeight + (-yOffset + initialHeaderImageYOffset)
         } else {
             if yOffset >= stickyHeaderStartOffset {
-//                if stickyHeaderView == nil {
-//                    self.stickyHeaderView = UIImageView(frame: self.profileBackgroundImage.frame)
-//                    self.stickyHeaderView!.image = self.profileBackgroundImage.image!
-//                    self.stickyHeaderView!.autoresizingMask = UIViewAutoresizing.FlexibleWidth | UIViewAutoresizing.FlexibleHeight
-//                    self.stickyHeaderView!.backgroundColor = UIColor.clearColor()
-//                }
                 headerRect.origin.y = -stickyHeaderStartOffset + (yOffset + initialHeaderImageYOffset)
                 headerRect.size.height = initialHeaderImageHeight
                 
-//                self.stickyHeaderView?.frame = headerRect
-//                self.profileTableHeader.insertSubview(stickyHeaderView!, belowSubview: self.blurImageView)
+                let tmpFrame = self.profileImageView.frame
+                self.profileTableHeader.sendSubviewToBack(self.profileImageView)
+                self.profileImageView.frame = tmpFrame
                 
                 if (user.bannerImageUrl != nil) {
                     if (yOffset >= blurBackgroundStartOffset) {
@@ -172,8 +166,7 @@ class ProfileViewController: UIViewController, UITableViewDataSource, UITableVie
                     }
                 }
             } else {
-//                self.stickyHeaderView?.removeFromSuperview()
-//                self.stickyHeaderView = nil
+                self.profileTableHeader.bringSubviewToFront(self.profileImageView)
                 
                 // shrink the profile image (yOffset from -64 to -20, image side length from 66 to 44
                 let oldHeight = self.profileImageView.frame.height
