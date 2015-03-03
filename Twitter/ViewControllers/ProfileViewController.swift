@@ -20,6 +20,9 @@ class ProfileViewController: UIViewController, UITableViewDataSource, UITableVie
     @IBOutlet weak var profileFollowingCnt: UILabel!
     @IBOutlet weak var profileFollowersCnt: UILabel!
 
+    @IBOutlet weak var profileImageWidthConstraint: NSLayoutConstraint!
+    @IBOutlet weak var profileImageHeightConstraint: NSLayoutConstraint!
+
     private let initialHeaderImageYOffset:CGFloat = -64
     private let initialHeaderImageHeight:CGFloat = 106
     private let stickyHeaderStartOffset:CGFloat = -22
@@ -169,14 +172,9 @@ class ProfileViewController: UIViewController, UITableViewDataSource, UITableVie
                 self.profileTableHeader.bringSubviewToFront(self.profileImageView)
                 
                 // shrink the profile image (yOffset from -64 to -20, image side length from 66 to 44
-                let oldHeight = self.profileImageView.frame.height
-                let oldY = self.profileImageView.center.y
                 let sideLength = CGFloat(66 - (yOffset + 64) / 2)
-                var profileImageRect = CGRect(x: self.profileImageView.center.x - sideLength / 2, y: (oldY + oldHeight/2) - sideLength, width: sideLength, height: sideLength)
-                println("sideLength: \(sideLength)")
-                print("profileImageRect: " )
-                println(profileImageRect)
-                self.profileImageView.frame = profileImageRect
+                self.profileImageWidthConstraint.constant = sideLength
+                self.profileImageHeightConstraint.constant = sideLength
             }
         }
         profileBackgroundImage.frame = headerRect

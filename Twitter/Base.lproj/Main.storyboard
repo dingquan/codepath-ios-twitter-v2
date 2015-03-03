@@ -1054,7 +1054,9 @@
                         <outlet property="profileDescription" destination="ZN7-ED-cbj" id="ez7-Ro-viF"/>
                         <outlet property="profileFollowersCnt" destination="yCd-RK-K4J" id="fMw-FY-JK0"/>
                         <outlet property="profileFollowingCnt" destination="3pk-qp-1rN" id="Jhv-GQ-FNA"/>
+                        <outlet property="profileImageHeightConstraint" destination="AcQ-Th-wrS" id="dYm-5C-Ktc"/>
                         <outlet property="profileImageView" destination="KSv-yX-F3E" id="RC7-AO-c0S"/>
+                        <outlet property="profileImageWidthConstraint" destination="Neb-dL-mjE" id="Fgr-vo-sJY"/>
                         <outlet property="profileName" destination="yWF-Hb-UWc" id="fGE-lf-Hpu"/>
                         <outlet property="profileScreenName" destination="WdK-hw-loE" id="yKu-1a-zHf"/>
                         <outlet property="profileTableHeader" destination="jsh-tF-7eA" id="MPz-jI-4dg"/>
