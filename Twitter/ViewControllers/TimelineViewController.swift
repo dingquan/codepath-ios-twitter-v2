@@ -92,13 +92,13 @@ class TimelineViewController: UIViewController, UITableViewDataSource, UITableVi
         var tweet = tweets![indexPath.row]
         var cell:UITableViewCell
         if tweet.imageUrl == nil {
-            cell = tableView.dequeueReusableCellWithIdentifier("textCell", forIndexPath: indexPath) as! TextTableViewCell
-            (cell as! TextTableViewCell).delegate = self
-            (cell as! TextTableViewCell).tweet = tweet
+            cell = tableView.dequeueReusableCellWithIdentifier("textCell", forIndexPath: indexPath) as TextTableViewCell
+            (cell as TextTableViewCell).delegate = self
+            (cell as TextTableViewCell).tweet = tweet
         } else {
-            cell = tableView.dequeueReusableCellWithIdentifier("imageCell", forIndexPath: indexPath) as! ImageTableViewCell
-            (cell as! ImageTableViewCell).delegate = self
-            (cell as! ImageTableViewCell).tweet = tweet
+            cell = tableView.dequeueReusableCellWithIdentifier("imageCell", forIndexPath: indexPath) as ImageTableViewCell
+            (cell as ImageTableViewCell).delegate = self
+            (cell as ImageTableViewCell).tweet = tweet
         }
 
         // change the default margin of the table divider length
@@ -127,16 +127,16 @@ class TimelineViewController: UIViewController, UITableViewDataSource, UITableVi
     
     override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
         if segue.identifier == "showTweetDetails" {
-            var indexPath:NSIndexPath = sender as! NSIndexPath
+            var indexPath:NSIndexPath = sender as NSIndexPath
             let tweet = self.tweets[indexPath.row]
-            let tweetDetailVC = segue.destinationViewController as! TweetDetailViewController
+            let tweetDetailVC = segue.destinationViewController as TweetDetailViewController
             tweetDetailVC.tweet = tweet
             tweetDetailVC.forIndexPath = indexPath
         } else if segue.identifier == "replyTweetFromTimeline" {
-            let newTweetVC = segue.destinationViewController as! NewTweetViewController
+            let newTweetVC = segue.destinationViewController as NewTweetViewController
             newTweetVC.inReplyToTweet = sender as? Tweet
         } else if segue.identifier == "showProfile" {
-            let profileVC = segue.destinationViewController as! ProfileViewController
+            let profileVC = segue.destinationViewController as ProfileViewController
             profileVC.user = (sender as? Tweet)!.user
         }
     }
@@ -225,15 +225,15 @@ class TimelineViewController: UIViewController, UITableViewDataSource, UITableVi
     func updateTweetTableWithNewTweet(notification: NSNotification){
         let tweet = notification.object
         if ((tweet?.isKindOfClass(Tweet) != nil)){
-            tweets.insert(tweet! as! Tweet, atIndex: 0)
+            tweets.insert(tweet! as Tweet, atIndex: 0)
             self.tweetsTable.reloadData()
         }
     }
     
     func updateTweetTableWithTweet(notification: NSNotification){
-        let obj = (notification.object as! NSDictionary)
-        let tweet = obj["tweet"] as! Tweet
-        let indexPath = obj["indexPath"] as! NSIndexPath
+        let obj = (notification.object as NSDictionary)
+        let tweet = obj["tweet"] as Tweet
+        let indexPath = obj["indexPath"] as NSIndexPath
         self.tweets[indexPath.row] = tweet
         self.tweetsTable.reloadRowsAtIndexPaths([indexPath], withRowAnimation: UITableViewRowAnimation.None)
     }

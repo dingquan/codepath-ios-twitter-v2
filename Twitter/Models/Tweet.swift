@@ -22,8 +22,8 @@ class Tweet {
     
     init(dictionary: NSDictionary){
         self.text = dictionary["text"] as? String
-        self.user = User(dictionary: dictionary["user"] as! NSDictionary)
-        self.id = (dictionary["id"] as! NSNumber).unsignedLongLongValue
+        self.user = User(dictionary: dictionary["user"] as NSDictionary)
+        self.id = (dictionary["id"] as NSNumber).unsignedLongLongValue
         
         var createdAtStr = dictionary["created_at"] as? String
         var dateFormatter:NSDateFormatter = NSDateFormatter()
@@ -40,9 +40,9 @@ class Tweet {
             var media = entities!["media"] as? NSArray
             if media != nil {
                 for aMedia in media! {
-                    var type = (aMedia as! NSDictionary)["type"] as? NSString
+                    var type = (aMedia as NSDictionary)["type"] as? NSString
                     if type == "photo" {
-                        self.imageUrl = (aMedia as! NSDictionary)["media_url"] as? String
+                        self.imageUrl = (aMedia as NSDictionary)["media_url"] as? String
                     }
                 }
             }

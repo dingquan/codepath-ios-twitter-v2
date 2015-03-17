@@ -100,13 +100,13 @@ class ProfileViewController: UIViewController, UITableViewDataSource, UITableVie
         var tweet = tweets![indexPath.row]
         var cell:UITableViewCell
         if tweet.imageUrl == nil {
-            cell = tableView.dequeueReusableCellWithIdentifier("textCell", forIndexPath: indexPath) as! TextTableViewCell
-            (cell as! TextTableViewCell).delegate = self
-            (cell as! TextTableViewCell).tweet = tweet
+            cell = tableView.dequeueReusableCellWithIdentifier("textCell", forIndexPath: indexPath) as TextTableViewCell
+            (cell as TextTableViewCell).delegate = self
+            (cell as TextTableViewCell).tweet = tweet
         } else {
-            cell = tableView.dequeueReusableCellWithIdentifier("imageCell", forIndexPath: indexPath) as! ImageTableViewCell
-            (cell as! ImageTableViewCell).delegate = self
-            (cell as! ImageTableViewCell).tweet = tweet
+            cell = tableView.dequeueReusableCellWithIdentifier("imageCell", forIndexPath: indexPath) as ImageTableViewCell
+            (cell as ImageTableViewCell).delegate = self
+            (cell as ImageTableViewCell).tweet = tweet
         }
         
         // change the default margin of the table divider length
@@ -184,13 +184,13 @@ class ProfileViewController: UIViewController, UITableViewDataSource, UITableVie
     
     override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
         if segue.identifier == "showDetailsFromProfile" {
-            var indexPath:NSIndexPath = sender as! NSIndexPath
+            var indexPath:NSIndexPath = sender as NSIndexPath
             let tweet = self.tweets[indexPath.row]
-            let tweetDetailVC = segue.destinationViewController as! TweetDetailViewController
+            let tweetDetailVC = segue.destinationViewController as TweetDetailViewController
             tweetDetailVC.tweet = tweet
             tweetDetailVC.forIndexPath = indexPath
         } else if segue.identifier == "replyTweetFromTimeline" {
-            let newTweetVC = segue.destinationViewController as! NewTweetViewController
+            let newTweetVC = segue.destinationViewController as NewTweetViewController
             newTweetVC.inReplyToTweet = sender as? Tweet
         }
     }

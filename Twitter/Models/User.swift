@@ -33,7 +33,7 @@ class User {
         self.screenName = dictionary["screen_name"] as? String
         self.profileImageUrl = dictionary["profile_image_url"] as? String
         self.tagLine = dictionary["description"] as? String
-        self.id = (dictionary["id"] as! NSNumber).unsignedLongLongValue
+        self.id = (dictionary["id"] as NSNumber).unsignedLongLongValue
         self.description = dictionary["description"] as? String
         self.bannerImageUrl = dictionary["profile_banner_url"] as? String
         self.backgroundColor = dictionary["profile_background_color"] as? UInt
@@ -47,7 +47,7 @@ class User {
             if _currentUser == nil {
                 var data = NSUserDefaults.standardUserDefaults().objectForKey(currentUserKey) as? NSData
                 if data != nil {
-                    var dictionary = NSJSONSerialization.JSONObjectWithData(data!, options: nil, error: nil) as! NSDictionary
+                    var dictionary = NSJSONSerialization.JSONObjectWithData(data!, options: nil, error: nil) as NSDictionary
                     _currentUser = User(dictionary: dictionary)
                 }
             }
