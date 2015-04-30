@@ -39,19 +39,19 @@ class ContainerViewController: UIViewController, MenuViewControllerDelegate {
         self.navigationController?.navigationBar.barStyle = UIBarStyle.Black
         
         var storyBoard = UIStoryboard(name: "Main", bundle: nil)
-        menuNavController = storyBoard.instantiateViewControllerWithIdentifier("MenuNavController") as UINavigationController
-        menuViewController = menuNavController.topViewController as MenuViewController
+        menuNavController = storyBoard.instantiateViewControllerWithIdentifier("MenuNavController") as! UINavigationController
+        menuViewController = menuNavController.topViewController as! MenuViewController
         menuViewController.delegate = self
         
-        timelineNavController = storyBoard.instantiateViewControllerWithIdentifier("TimelineNavController") as UINavigationController
-        timelineViewController = timelineNavController.topViewController as TimelineViewController
+        timelineNavController = storyBoard.instantiateViewControllerWithIdentifier("TimelineNavController") as! UINavigationController
+        timelineViewController = timelineNavController.topViewController as! TimelineViewController
         
-        profileViewController = storyBoard.instantiateViewControllerWithIdentifier("ProfileViewController") as ProfileViewController
+        profileViewController = storyBoard.instantiateViewControllerWithIdentifier("ProfileViewController") as! ProfileViewController
         profileViewController.user = User.currentUser!
         profileNavController = UINavigationController(rootViewController: profileViewController)
         
-        mentionsNavController = storyBoard.instantiateViewControllerWithIdentifier("TimelineNavController") as UINavigationController
-        mentionsViewController = mentionsNavController.topViewController as TimelineViewController
+        mentionsNavController = storyBoard.instantiateViewControllerWithIdentifier("TimelineNavController") as! UINavigationController
+        mentionsViewController = mentionsNavController.topViewController as! TimelineViewController
         mentionsViewController.isHomeTimeline = false
         
         addTimelineNavController()

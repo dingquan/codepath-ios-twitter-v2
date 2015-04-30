@@ -1,3 +1,10 @@
+bin/
+gen/
+Xcode
+.DS_Store
+target/
+build/
+.idea/
 # Xcode
 #
 build/

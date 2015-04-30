@@ -67,7 +67,7 @@ class TwitterClient: BDBOAuth1RequestOperationManager {
     func getUserProfile() -> Void {
         super.GET("1.1/account/verify_credentials.json", parameters: nil, success: { (operation:AFHTTPRequestOperation!, response:AnyObject!) -> Void in
                 println(response)
-                var user = User(dictionary: response as NSDictionary)
+                var user = User(dictionary: response as! NSDictionary)
                 User.currentUser = user
                 if (self.completionFunc != nil){
                     self.completionFunc!(user:user, error: nil)
@@ -96,7 +96,7 @@ class TwitterClient: BDBOAuth1RequestOperationManager {
         
         super.GET("1.1/statuses/home_timeline.json", parameters: params, success: { (operation: AFHTTPRequestOperation!, response: AnyObject!) -> Void in
 //            println(response)
-            var tweets = Tweet.tweetsWithArray(response as [NSDictionary])
+            var tweets = Tweet.tweetsWithArray(response as! [NSDictionary])
             completion(tweets: tweets, error: nil)
         }, failure: { (operation: AFHTTPRequestOperation!, error: NSError!) -> Void in
             completion(tweets: nil, error: error)
@@ -110,7 +110,7 @@ class TwitterClient: BDBOAuth1RequestOperationManager {
         
         super.GET("1.1/statuses/user_timeline.json", parameters: params, success: { (operation: AFHTTPRequestOperation!, response: AnyObject!) -> Void in
 //            println(response)
-            var tweets = Tweet.tweetsWithArray(response as [NSDictionary])
+            var tweets = Tweet.tweetsWithArray(response as! [NSDictionary])
             completion(tweets: tweets, error: nil)
             }, failure: { (operation: AFHTTPRequestOperation!, error: NSError!) -> Void in
                 completion(tweets: nil, error: error)
@@ -122,7 +122,7 @@ class TwitterClient: BDBOAuth1RequestOperationManager {
         
         super.GET("1.1/statuses/mentions_timeline.json", parameters: params, success: { (operation: AFHTTPRequestOperation!, response: AnyObject!) -> Void in
             //            println(response)
-            var tweets = Tweet.tweetsWithArray(response as [NSDictionary])
+            var tweets = Tweet.tweetsWithArray(response as! [NSDictionary])
             completion(tweets: tweets, error: nil)
             }, failure: { (operation: AFHTTPRequestOperation!, error: NSError!) -> Void in
                 completion(tweets: nil, error: error)
@@ -145,7 +145,7 @@ class TwitterClient: BDBOAuth1RequestOperationManager {
         
         super.POST("1.1/statuses/update.json", parameters: params, success: { (operation: AFHTTPRequestOperation!, response: AnyObject!) -> Void in
                 println(response)
-                var tweet:Tweet = Tweet(dictionary: response as NSDictionary)
+                var tweet:Tweet = Tweet(dictionary: response as! NSDictionary)
                 completion(tweet: tweet, error: nil)
             }, failure: { (operation: AFHTTPRequestOperation!, error: NSError!) -> Void in
                 completion(tweet: nil, error: error)
@@ -157,7 +157,7 @@ class TwitterClient: BDBOAuth1RequestOperationManager {
         params.setValue(String(id), forKey: "id")
         super.POST("1.1/favorites/create.json", parameters: params, success: { (operation: AFHTTPRequestOperation!, response: AnyObject!) -> Void in
                 println(response)
-                var tweet:Tweet = Tweet(dictionary: response as NSDictionary)
+                var tweet:Tweet = Tweet(dictionary: response as! NSDictionary)
                 completion(tweet: tweet, error: nil)
             }, failure: { (operation: AFHTTPRequestOperation!, error: NSError!) -> Void in
                 completion(tweet: nil, error: error)
@@ -169,7 +169,7 @@ class TwitterClient: BDBOAuth1RequestOperationManager {
         params.setValue(String(id), forKey: "id")
         super.POST("1.1/favorites/destroy.json", parameters: params, success: { (operation: AFHTTPRequestOperation!, response: AnyObject!) -> Void in
             println(response)
-            var tweet:Tweet = Tweet(dictionary: response as NSDictionary)
+            var tweet:Tweet = Tweet(dictionary: response as! NSDictionary)
             completion(tweet: tweet, error: nil)
             }, failure: { (operation: AFHTTPRequestOperation!, error: NSError!) -> Void in
                 completion(tweet: nil, error: error)
@@ -181,7 +181,7 @@ class TwitterClient: BDBOAuth1RequestOperationManager {
         params.setValue(String(id), forKey: "id")
         super.POST("1.1/statuses/retweet/\(id).json", parameters: params, success: { (operation: AFHTTPRequestOperation!, response: AnyObject!) -> Void in
             println(response)
-            var tweet:Tweet = Tweet(dictionary: response as NSDictionary)
+            var tweet:Tweet = Tweet(dictionary: response as! NSDictionary)
             completion(tweet: tweet, error: nil)
             }, failure: { (operation: AFHTTPRequestOperation!, error: NSError!) -> Void in
                 completion(tweet: nil, error: error)
@@ -193,7 +193,7 @@ class TwitterClient: BDBOAuth1RequestOperationManager {
         params.setValue(String(id), forKey: "id")
         super.POST("1.1/statuses/destroy/\(id).json", parameters: params, success: { (operation: AFHTTPRequestOperation!, response: AnyObject!) -> Void in
             println(response)
-            var tweet:Tweet = Tweet(dictionary: response as NSDictionary)
+            var tweet:Tweet = Tweet(dictionary: response as! NSDictionary)
             completion(tweet: tweet, error: nil)
             }, failure: { (operation: AFHTTPRequestOperation!, error: NSError!) -> Void in
                 completion(tweet: nil, error: error)

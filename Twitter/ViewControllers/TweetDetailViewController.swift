@@ -165,7 +165,7 @@ class TweetDetailViewController: UIViewController, TTTAttributedLabelDelegate {
     
     override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
         if segue.identifier == "replyTweetFromDetailsView" {
-            let newTweetVC = segue.destinationViewController as NewTweetViewController
+            let newTweetVC = segue.destinationViewController as! NewTweetViewController
             newTweetVC.inReplyToTweet = self.tweet
         }
     }
