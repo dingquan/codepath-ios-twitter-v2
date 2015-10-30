@@ -34,7 +34,7 @@ class TextTableViewCell: UITableViewCell, TTTAttributedLabelDelegate {
 
     var tweet:Tweet? {
         didSet {
-            var user:User = tweet!.user!
+            let user:User = tweet!.user!
             self.name.text = user.name!
             self.screenName.text = "@\(user.screenName!)"
             self.tweetBody.text = tweet!.text!
@@ -65,13 +65,13 @@ class TextTableViewCell: UITableViewCell, TTTAttributedLabelDelegate {
     
     private func fadeInImage(imageView: UIImageView, imgUrl: String?) -> Void {
         imageView.image = nil
-        var urlReq = NSURLRequest(URL: NSURL(string: imgUrl!)!)
+        let urlReq = NSURLRequest(URL: NSURL(string: imgUrl!)!)
         imageView.setImageWithURLRequest(urlReq, placeholderImage: nil, success: { (request: NSURLRequest!, response: NSHTTPURLResponse!, image:UIImage!) -> Void in
             imageView.alpha = 0.0
             imageView.image = image
             UIView.animateWithDuration(0.25, animations: { imageView.alpha = 1.0})
             }, failure: { (request:NSURLRequest!, response:NSHTTPURLResponse!, error:NSError!) -> Void in
-                println(error)
+                print(error)
         })
     }
     
@@ -82,7 +82,7 @@ class TextTableViewCell: UITableViewCell, TTTAttributedLabelDelegate {
         self.tweetBody.delegate = self
         self.tweetBody.enabledTextCheckingTypes = NSTextCheckingType.Link.rawValue
         
-        var tapGestureRecognizer = UITapGestureRecognizer(target: self, action: "onProfileImageTap:")
+        let tapGestureRecognizer = UITapGestureRecognizer(target: self, action: "onProfileImageTap:")
         self.profileImage.userInteractionEnabled = true
         self.profileImage.addGestureRecognizer(tapGestureRecognizer)
     }
@@ -102,7 +102,7 @@ class TextTableViewCell: UITableViewCell, TTTAttributedLabelDelegate {
     }
     
     @IBAction func onRetweet(sender: AnyObject) {
-        var oldRetweetCount = self.tweet!.retweetCount!
+        let oldRetweetCount = self.tweet!.retweetCount!
         if (self.tweet?.retweeted! == true) {
             User.currentUser?.deleteTweetWithCompletion(self.retweet!.id!, completion: { (tweet, error) -> Void in
                 if (tweet != nil) {
@@ -117,7 +117,7 @@ class TextTableViewCell: UITableViewCell, TTTAttributedLabelDelegate {
                     self.retweetIcon.setImage(UIImage(named: "retweet"), forState: UIControlState.Normal)
                 }
                 else {
-                    println(error)
+                    print(error)
                 }
             })
         } else {
@@ -134,14 +134,14 @@ class TextTableViewCell: UITableViewCell, TTTAttributedLabelDelegate {
                     self.retweetIcon.setImage(UIImage(named: "retweet_on"), forState: UIControlState.Normal)
                 }
                 else {
-                    println(error)
+                    print(error)
                 }
             })
         }
     }
 
     @IBAction func onFavorite(sender: AnyObject) {
-        var oldFavCount = self.tweet!.favoriteCount!
+        let oldFavCount = self.tweet!.favoriteCount!
         if (tweet!.favorited! == true) {
             User.currentUser?.unfavoriteTweetWithCompletion(self.tweet!.id!, completion: { (tweet, error) -> Void in
                 if (tweet != nil) {
@@ -154,7 +154,7 @@ class TextTableViewCell: UITableViewCell, TTTAttributedLabelDelegate {
                     self.favoriteCount.sizeToFit()
                     self.delegate?.tweetUpdated(tweet!, forCell: self)
                 } else {
-                    println(error)
+                    print(error)
                 }
             })
         } else {
@@ -169,7 +169,7 @@ class TextTableViewCell: UITableViewCell, TTTAttributedLabelDelegate {
                     self.favoriteCount.sizeToFit()
                     self.delegate?.tweetUpdated(tweet!, forCell: self)
                 } else {
-                    println(error)
+                    print(error)
                 }
             })
         }

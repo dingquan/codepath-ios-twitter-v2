@@ -23,12 +23,12 @@ class TwitterClient: BDBOAuth1RequestOperationManager {
     
     var completionFunc: ((user: User?, error: NSError?) -> Void)?
     
-    required init(coder aDecoder: NSCoder) {
+    required init?(coder aDecoder: NSCoder) {
         super.init(coder: aDecoder)
     }
     
     init() {
-        var baseUrl = NSURL(string: TwitterApiBaseUrl)
+        let baseUrl = NSURL(string: TwitterApiBaseUrl)
         super.init(baseURL: baseUrl, consumerKey: TwitterConsumerKey, consumerSecret: TwitterConsumerSecret)
     }
     
@@ -37,13 +37,13 @@ class TwitterClient: BDBOAuth1RequestOperationManager {
         self.completionFunc = complete
         self.requestSerializer.removeAccessToken()
         self.fetchRequestTokenWithPath("oauth/request_token", method: "GET", callbackURL: NSURL(string: "cptwitterclient://oauth"), scope: nil, success: { (requestToken: BDBOAuth1Credential!) -> Void in
-                println("Got the request token")
+                print("Got the request token")
                 
                 var authUrl = NSURL(string: "https://api.twitter.com/oauth/authorize?oauth_token=\(requestToken.token)")
                 var application = UIApplication.sharedApplication()
                 application.openURL(authUrl!)
             }, failure: { (error: NSError!) -> Void in
-                println(error)
+                print(error)
                 if (self.completionFunc != nil){
                     self.completionFunc!(user: nil, error: error)
                 }
@@ -53,11 +53,11 @@ class TwitterClient: BDBOAuth1RequestOperationManager {
     
     func openUrl(url: NSURL) -> Void {
         self.fetchAccessTokenWithPath("oauth/access_token", method: "POST", requestToken: BDBOAuth1Credential(queryString: url.query), success: { (credential: BDBOAuth1Credential!) -> Void in
-                println("got access token")
+                print("got access token")
                 self.requestSerializer.saveAccessToken(credential)
                 self.getUserProfile()
             }, failure: { (error: NSError!) -> Void in
-                println(error)
+                print(error)
                 if (self.completionFunc != nil){
                     self.completionFunc!(user:nil, error: error)
                 }
@@ -66,14 +66,14 @@ class TwitterClient: BDBOAuth1RequestOperationManager {
     
     func getUserProfile() -> Void {
         super.GET("1.1/account/verify_credentials.json", parameters: nil, success: { (operation:AFHTTPRequestOperation!, response:AnyObject!) -> Void in
-                println(response)
+                print(response)
                 var user = User(dictionary: response as! NSDictionary)
                 User.currentUser = user
                 if (self.completionFunc != nil){
                     self.completionFunc!(user:user, error: nil)
                 }
             }, failure: { (operation: AFHTTPRequestOperation!, error: NSError!) -> Void in
-                println(error)
+                print(error)
                 if (self.completionFunc != nil){
                     self.completionFunc!(user:nil, error: error)
                 }
@@ -81,7 +81,7 @@ class TwitterClient: BDBOAuth1RequestOperationManager {
     }
     
     func homeTimelineWithCompletion(minId: UInt64?, maxId: UInt64?, completion: (tweets: [Tweet]?, error: NSError?) -> ()){
-        var params:NSDictionary = NSMutableDictionary()
+        let params:NSDictionary = NSMutableDictionary()
         
         if (minId != nil) {
             if (minId != UINT64_MAX) {
@@ -96,7 +96,7 @@ class TwitterClient: BDBOAuth1RequestOperationManager {
         
         super.GET("1.1/statuses/home_timeline.json", parameters: params, success: { (operation: AFHTTPRequestOperation!, response: AnyObject!) -> Void in
 //            println(response)
-            var tweets = Tweet.tweetsWithArray(response as! [NSDictionary])
+            let tweets = Tweet.tweetsWithArray(response as! [NSDictionary])
             completion(tweets: tweets, error: nil)
         }, failure: { (operation: AFHTTPRequestOperation!, error: NSError!) -> Void in
             completion(tweets: nil, error: error)
@@ -104,13 +104,13 @@ class TwitterClient: BDBOAuth1RequestOperationManager {
     }
     
     func userTimelineWithCompletion(userId: UInt64, completion: (tweets: [Tweet]?, error: NSError?) -> ()){
-        var params:NSDictionary = NSMutableDictionary()
+        let params:NSDictionary = NSMutableDictionary()
         
         params.setValue(String(userId), forKey: "user_id")
         
         super.GET("1.1/statuses/user_timeline.json", parameters: params, success: { (operation: AFHTTPRequestOperation!, response: AnyObject!) -> Void in
 //            println(response)
-            var tweets = Tweet.tweetsWithArray(response as! [NSDictionary])
+            let tweets = Tweet.tweetsWithArray(response as! [NSDictionary])
             completion(tweets: tweets, error: nil)
             }, failure: { (operation: AFHTTPRequestOperation!, error: NSError!) -> Void in
                 completion(tweets: nil, error: error)
@@ -118,11 +118,11 @@ class TwitterClient: BDBOAuth1RequestOperationManager {
     }
     
     func mentionsTimelineWithCompletion(completion: (tweets: [Tweet]?, error: NSError?) -> ()){
-        var params:NSDictionary = NSMutableDictionary()
+        let params:NSDictionary = NSMutableDictionary()
         
         super.GET("1.1/statuses/mentions_timeline.json", parameters: params, success: { (operation: AFHTTPRequestOperation!, response: AnyObject!) -> Void in
             //            println(response)
-            var tweets = Tweet.tweetsWithArray(response as! [NSDictionary])
+            let tweets = Tweet.tweetsWithArray(response as! [NSDictionary])
             completion(tweets: tweets, error: nil)
             }, failure: { (operation: AFHTTPRequestOperation!, error: NSError!) -> Void in
                 completion(tweets: nil, error: error)
@@ -130,7 +130,7 @@ class TwitterClient: BDBOAuth1RequestOperationManager {
     }
     
     func postTweet(originalTweet: Tweet?, tweetText: String?, completion: (tweet: Tweet?, error: NSError?) -> ()) {
-        var params:NSDictionary = NSMutableDictionary()
+        let params:NSDictionary = NSMutableDictionary()
         if tweetText == nil {
             return
         }
@@ -144,8 +144,8 @@ class TwitterClient: BDBOAuth1RequestOperationManager {
         }
         
         super.POST("1.1/statuses/update.json", parameters: params, success: { (operation: AFHTTPRequestOperation!, response: AnyObject!) -> Void in
-                println(response)
-                var tweet:Tweet = Tweet(dictionary: response as! NSDictionary)
+                print(response)
+                let tweet:Tweet = Tweet(dictionary: response as! NSDictionary)
                 completion(tweet: tweet, error: nil)
             }, failure: { (operation: AFHTTPRequestOperation!, error: NSError!) -> Void in
                 completion(tweet: nil, error: error)
@@ -153,11 +153,11 @@ class TwitterClient: BDBOAuth1RequestOperationManager {
     }
     
     func favoriteTweet(id: UInt64, completion: (tweet: Tweet?, error: NSError?) -> ()) {
-        var params:NSDictionary = NSMutableDictionary()
+        let params:NSDictionary = NSMutableDictionary()
         params.setValue(String(id), forKey: "id")
         super.POST("1.1/favorites/create.json", parameters: params, success: { (operation: AFHTTPRequestOperation!, response: AnyObject!) -> Void in
-                println(response)
-                var tweet:Tweet = Tweet(dictionary: response as! NSDictionary)
+                print(response)
+                let tweet:Tweet = Tweet(dictionary: response as! NSDictionary)
                 completion(tweet: tweet, error: nil)
             }, failure: { (operation: AFHTTPRequestOperation!, error: NSError!) -> Void in
                 completion(tweet: nil, error: error)
@@ -165,11 +165,11 @@ class TwitterClient: BDBOAuth1RequestOperationManager {
     }
     
     func unfavoriteTweet(id: UInt64, completion: (tweet: Tweet?, error: NSError?) -> ()) {
-        var params:NSDictionary = NSMutableDictionary()
+        let params:NSDictionary = NSMutableDictionary()
         params.setValue(String(id), forKey: "id")
         super.POST("1.1/favorites/destroy.json", parameters: params, success: { (operation: AFHTTPRequestOperation!, response: AnyObject!) -> Void in
-            println(response)
-            var tweet:Tweet = Tweet(dictionary: response as! NSDictionary)
+            print(response)
+            let tweet:Tweet = Tweet(dictionary: response as! NSDictionary)
             completion(tweet: tweet, error: nil)
             }, failure: { (operation: AFHTTPRequestOperation!, error: NSError!) -> Void in
                 completion(tweet: nil, error: error)
@@ -180,7 +180,7 @@ class TwitterClient: BDBOAuth1RequestOperationManager {
         var params:NSDictionary = NSMutableDictionary()
         params.setValue(String(id), forKey: "id")
         super.POST("1.1/statuses/retweet/\(id).json", parameters: params, success: { (operation: AFHTTPRequestOperation!, response: AnyObject!) -> Void in
-            println(response)
+            print(response)
             var tweet:Tweet = Tweet(dictionary: response as! NSDictionary)
             completion(tweet: tweet, error: nil)
             }, failure: { (operation: AFHTTPRequestOperation!, error: NSError!) -> Void in
@@ -189,11 +189,11 @@ class TwitterClient: BDBOAuth1RequestOperationManager {
     }
     
     func deleteTweet(id: UInt64, completion: (tweet: Tweet?, error: NSError?) -> ()) {
-        var params:NSDictionary = NSMutableDictionary()
+        let params:NSDictionary = NSMutableDictionary()
         params.setValue(String(id), forKey: "id")
         super.POST("1.1/statuses/destroy/\(id).json", parameters: params, success: { (operation: AFHTTPRequestOperation!, response: AnyObject!) -> Void in
-            println(response)
-            var tweet:Tweet = Tweet(dictionary: response as! NSDictionary)
+            print(response)
+            let tweet:Tweet = Tweet(dictionary: response as! NSDictionary)
             completion(tweet: tweet, error: nil)
             }, failure: { (operation: AFHTTPRequestOperation!, error: NSError!) -> Void in
                 completion(tweet: nil, error: error)

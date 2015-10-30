@@ -26,7 +26,7 @@ class ContainerViewController: UIViewController, MenuViewControllerDelegate {
     
     var currentNavControllerOriginalCenter: CGPoint!
     
-    required init(coder aDecoder: NSCoder) {
+    required init?(coder aDecoder: NSCoder) {
         super.init(coder: aDecoder)
         menuRevealed = false
     }
@@ -38,7 +38,7 @@ class ContainerViewController: UIViewController, MenuViewControllerDelegate {
         self.navigationController?.navigationBar.tintColor = UIColor.whiteColor()
         self.navigationController?.navigationBar.barStyle = UIBarStyle.Black
         
-        var storyBoard = UIStoryboard(name: "Main", bundle: nil)
+        let storyBoard = UIStoryboard(name: "Main", bundle: nil)
         menuNavController = storyBoard.instantiateViewControllerWithIdentifier("MenuNavController") as! UINavigationController
         menuViewController = menuNavController.topViewController as! MenuViewController
         menuViewController.delegate = self
@@ -198,8 +198,8 @@ class ContainerViewController: UIViewController, MenuViewControllerDelegate {
     
     func handlePanGesture(recognizer: UIPanGestureRecognizer){
         let panLeftToRight = recognizer.velocityInView(view).x > 0
-        var translation = recognizer.translationInView(view)
-        println("panLeftToRight: \(panLeftToRight), translation: \(translation)")
+        let translation = recognizer.translationInView(view)
+        print("panLeftToRight: \(panLeftToRight), translation: \(translation)", terminator: "")
         if recognizer.state == UIGestureRecognizerState.Began {
             addMenuNavController()
             currentNavControllerOriginalCenter = currentNavController.view.center

@@ -24,7 +24,7 @@ class TimelineViewController: UIViewController, UITableViewDataSource, UITableVi
         }
     }
     
-    required init(coder aDecoder: NSCoder) {
+    required init?(coder aDecoder: NSCoder) {
         super.init(coder: aDecoder)
         minId = UINT64_MAX
         maxId = 1 as UInt64
@@ -56,7 +56,7 @@ class TimelineViewController: UIViewController, UITableViewDataSource, UITableVi
         self.tweetsTable.estimatedRowHeight = 260
         self.tweetsTable.rowHeight = UITableViewAutomaticDimension
         self.tweetsTable.addInfiniteScrollingWithActionHandler({
-            println("infinite scroll triggered")
+            print("infinite scroll triggered")
             self.fetchMoreTimeline()
             ();
         })
@@ -89,7 +89,7 @@ class TimelineViewController: UIViewController, UITableViewDataSource, UITableVi
     }
     
     func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
-        var tweet = tweets![indexPath.row]
+        let tweet = tweets![indexPath.row]
         var cell:UITableViewCell
         if tweet.imageUrl == nil {
             cell = tableView.dequeueReusableCellWithIdentifier("textCell", forIndexPath: indexPath) as! TextTableViewCell
@@ -127,7 +127,7 @@ class TimelineViewController: UIViewController, UITableViewDataSource, UITableVi
     
     override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
         if segue.identifier == "showTweetDetails" {
-            var indexPath:NSIndexPath = sender as! NSIndexPath
+            let indexPath:NSIndexPath = sender as! NSIndexPath
             let tweet = self.tweets[indexPath.row]
             let tweetDetailVC = segue.destinationViewController as! TweetDetailViewController
             tweetDetailVC.tweet = tweet
@@ -166,7 +166,7 @@ class TimelineViewController: UIViewController, UITableViewDataSource, UITableVi
                     self.tweets! += tweets!
                     self.tweetsTable.reloadData()
                 } else {
-                    println(error)
+                    print(error)
                 }
                 self.tweetsTable.infiniteScrollingView.stopAnimating()
             })
@@ -176,7 +176,7 @@ class TimelineViewController: UIViewController, UITableViewDataSource, UITableVi
                     self.tweets! = tweets!
                     self.tweetsTable.reloadData()
                 } else {
-                    println(error)
+                    print(error)
                 }
                 self.tweetsTable.infiniteScrollingView.stopAnimating()
             })
@@ -195,7 +195,7 @@ class TimelineViewController: UIViewController, UITableViewDataSource, UITableVi
                     self.tweets = newTweets
                     self.tweetsTable.reloadData()
                 } else {
-                    println(error)
+                    print(error)
                 }
     //            self.tweetsTable.pullToRefreshView.stopAnimating()
                 self.refreshControl.endRefreshing()
@@ -211,7 +211,7 @@ class TimelineViewController: UIViewController, UITableViewDataSource, UITableVi
         
         if self.tweets != nil {
             for tweet in tweets! {
-                var uid = tweet.id
+                let uid = tweet.id
                 if uid < minId {
                     self.minId = uid
                 }

@@ -27,7 +27,7 @@ class ImageTableViewCell: UITableViewCell, TTTAttributedLabelDelegate {
     
     var tweet:Tweet? {
         didSet {
-            var user:User = tweet!.user!
+            let user:User = tweet!.user!
             self.name.text = user.name!
             self.screenName.text = "@\(user.screenName!)"
             self.tweetBody.text = tweet!.text!
@@ -69,7 +69,7 @@ class ImageTableViewCell: UITableViewCell, TTTAttributedLabelDelegate {
         self.tweetBody.delegate = self
         self.tweetBody.enabledTextCheckingTypes = NSTextCheckingType.Link.rawValue
         
-        var tapGestureRecognizer = UITapGestureRecognizer(target: self, action: "onProfileImageTap:")
+        let tapGestureRecognizer = UITapGestureRecognizer(target: self, action: "onProfileImageTap:")
         self.profileImage.userInteractionEnabled = true
         self.profileImage.addGestureRecognizer(tapGestureRecognizer)
     }
@@ -89,7 +89,7 @@ class ImageTableViewCell: UITableViewCell, TTTAttributedLabelDelegate {
     }
     
     @IBAction func onRetweet(sender: AnyObject) {
-        var oldRetweetCount = self.tweet!.retweetCount!
+        let oldRetweetCount = self.tweet!.retweetCount!
         if (self.tweet?.retweeted! == true) {
             User.currentUser?.deleteTweetWithCompletion(self.retweet!.id!, completion: { (tweet, error) -> Void in
                 if (tweet != nil) {
@@ -104,7 +104,7 @@ class ImageTableViewCell: UITableViewCell, TTTAttributedLabelDelegate {
                     self.retweetIcon.setImage(UIImage(named: "retweet"), forState: UIControlState.Normal)
                 }
                 else {
-                    println(error)
+                    print(error)
                 }
             })
         } else {
@@ -121,14 +121,14 @@ class ImageTableViewCell: UITableViewCell, TTTAttributedLabelDelegate {
                     self.retweetIcon.setImage(UIImage(named: "retweet_on"), forState: UIControlState.Normal)
                 }
                 else {
-                    println(error)
+                    print(error)
                 }
             })
         }
     }
 
     @IBAction func onFavorite(sender: AnyObject) {
-        var oldFavCount = self.tweet!.favoriteCount!
+        let oldFavCount = self.tweet!.favoriteCount!
         if (tweet!.favorited! == true) {
             User.currentUser?.unfavoriteTweetWithCompletion(self.tweet!.id!, completion: { (tweet, error) -> Void in
                 if (tweet != nil) {
@@ -141,7 +141,7 @@ class ImageTableViewCell: UITableViewCell, TTTAttributedLabelDelegate {
                     self.favoriteCount.sizeToFit()
                     self.delegate?.tweetUpdated(tweet!, forCell: self)
                 } else {
-                    println(error)
+                    print(error)
                 }
             })
         } else {
@@ -156,7 +156,7 @@ class ImageTableViewCell: UITableViewCell, TTTAttributedLabelDelegate {
                     self.favoriteCount.sizeToFit()
                     self.delegate?.tweetUpdated(tweet!, forCell: self)
                 } else {
-                    println(error)
+                    print(error)
                 }
             })
         }

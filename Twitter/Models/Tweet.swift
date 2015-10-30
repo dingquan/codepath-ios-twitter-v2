@@ -25,8 +25,8 @@ class Tweet {
         self.user = User(dictionary: dictionary["user"] as! NSDictionary)
         self.id = (dictionary["id"] as! NSNumber).unsignedLongLongValue
         
-        var createdAtStr = dictionary["created_at"] as? String
-        var dateFormatter:NSDateFormatter = NSDateFormatter()
+        let createdAtStr = dictionary["created_at"] as? String
+        let dateFormatter:NSDateFormatter = NSDateFormatter()
         dateFormatter.dateFormat = "EEE MMM d HH:mm:ss Z y"
         self.createdAt = dateFormatter.dateFromString(createdAtStr!)
         
@@ -35,12 +35,12 @@ class Tweet {
         self.retweeted = dictionary["retweeted"] as? Bool
         self.retweetCount = dictionary["retweet_count"] as? Int
         
-        var entities = dictionary["entities"] as? NSDictionary
+        let entities = dictionary["entities"] as? NSDictionary
         if entities != nil {
-            var media = entities!["media"] as? NSArray
+            let media = entities!["media"] as? NSArray
             if media != nil {
                 for aMedia in media! {
-                    var type = (aMedia as! NSDictionary)["type"] as? NSString
+                    let type = (aMedia as! NSDictionary)["type"] as? NSString
                     if type == "photo" {
                         self.imageUrl = (aMedia as! NSDictionary)["media_url"] as? String
                     }
@@ -53,7 +53,7 @@ class Tweet {
         var tweets:[Tweet] = [Tweet]()
         
         for dictionary in array {
-            var tweet:Tweet = Tweet(dictionary: dictionary)
+            let tweet:Tweet = Tweet(dictionary: dictionary)
             tweets.append(tweet)
         }
         return tweets

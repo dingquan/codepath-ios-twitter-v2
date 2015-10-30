@@ -29,7 +29,7 @@ class TweetDetailViewController: UIViewController, TTTAttributedLabelDelegate {
     var dateFormatter:NSDateFormatter!
     var retweet:Tweet?
     
-    required init(coder aDecoder: NSCoder) {
+    required init?(coder aDecoder: NSCoder) {
         super.init(coder: aDecoder)
         dateFormatter = NSDateFormatter()
         dateFormatter.dateFormat = "m/dd/yy, hh:mm a"
@@ -88,7 +88,7 @@ class TweetDetailViewController: UIViewController, TTTAttributedLabelDelegate {
     }
     
     @IBAction func onRetweet(sender: AnyObject) {
-        var oldRetweetCount = self.tweet!.retweetCount!
+        let oldRetweetCount = self.tweet!.retweetCount!
         if (self.tweet?.retweeted! == true) {
             User.currentUser?.deleteTweetWithCompletion(self.retweet!.id!, completion: { (tweet, error) -> Void in
                 if (tweet != nil) {
@@ -104,7 +104,7 @@ class TweetDetailViewController: UIViewController, TTTAttributedLabelDelegate {
                     self.sendTweetUpdatedNotification()
                 }
                 else {
-                    println(error)
+                    print(error)
                 }
             })
         } else {
@@ -122,14 +122,14 @@ class TweetDetailViewController: UIViewController, TTTAttributedLabelDelegate {
                     self.sendTweetUpdatedNotification()
                 }
                 else {
-                    println(error)
+                    print(error)
                 }
             })
         }
     }
     
     @IBAction func onFavorite(sender: AnyObject) {
-        var oldFavCount = self.tweet!.favoriteCount!
+        let oldFavCount = self.tweet!.favoriteCount!
         if (tweet!.favorited! == true) {
             User.currentUser?.unfavoriteTweetWithCompletion(self.tweet!.id!, completion: { (tweet, error) -> Void in
                 if (tweet != nil) {
@@ -142,7 +142,7 @@ class TweetDetailViewController: UIViewController, TTTAttributedLabelDelegate {
                     self.favoriteCnt.sizeToFit()
                     self.sendTweetUpdatedNotification()
                 } else {
-                    println(error)
+                    print(error)
                 }
             })
         } else {
@@ -157,7 +157,7 @@ class TweetDetailViewController: UIViewController, TTTAttributedLabelDelegate {
                     self.favoriteCnt.sizeToFit()
                     self.sendTweetUpdatedNotification()
                 } else {
-                    println(error)
+                    print(error)
                 }
             })
         }

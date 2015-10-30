@@ -34,7 +34,7 @@ class ProfileViewController: UIViewController, UITableViewDataSource, UITableVie
     var user: User!
     var tweets: [Tweet]!
     
-    required init(coder aDecoder: NSCoder) {
+    required init?(coder aDecoder: NSCoder) {
         super.init(coder: aDecoder)
         tweets = [Tweet]()
     }
@@ -55,10 +55,10 @@ class ProfileViewController: UIViewController, UITableViewDataSource, UITableVie
     }
     
     func captureAndAddBlurImageBackground() {
-        println("capture image background")
+        print("capture image background")
         self.blurImageView = UIImageView(frame: self.profileBackgroundImage.frame)
         self.blurImageView.image = self.profileBackgroundImage.image!.applyBlurWithRadius(12, tintColor: UIColor(white:0.8, alpha:0.4), saturationDeltaFactor: 1.8, maskImage: nil)
-        self.blurImageView.autoresizingMask = UIViewAutoresizing.FlexibleWidth | UIViewAutoresizing.FlexibleHeight
+        self.blurImageView.autoresizingMask = [UIViewAutoresizing.FlexibleWidth, UIViewAutoresizing.FlexibleHeight]
         self.blurImageView.alpha = 0
         self.blurImageView.backgroundColor = UIColor.clearColor()
         self.profileTableHeader.addSubview(blurImageView)
@@ -97,7 +97,7 @@ class ProfileViewController: UIViewController, UITableViewDataSource, UITableVie
     }
     
     func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
-        var tweet = tweets![indexPath.row]
+        let tweet = tweets![indexPath.row]
         var cell:UITableViewCell
         if tweet.imageUrl == nil {
             cell = tableView.dequeueReusableCellWithIdentifier("textCell", forIndexPath: indexPath) as! TextTableViewCell
@@ -134,8 +134,8 @@ class ProfileViewController: UIViewController, UITableViewDataSource, UITableVie
     }
     
     func scrollViewDidScroll(scrollView: UIScrollView) {
-        print("contentOffset: " )
-        println(scrollView.contentOffset);
+        print("contentOffset: ")
+        print(scrollView.contentOffset);
         var headerRect = CGRect(x: 0, y: initialHeaderImageYOffset, width: self.profileTableView.bounds.width, height: initialHeaderImageHeight)
         let yOffset = scrollView.contentOffset.y
         
@@ -157,7 +157,7 @@ class ProfileViewController: UIViewController, UITableViewDataSource, UITableVie
                         // blur the background image
                         self.blurImageView?.frame = headerRect
                         self.blurImageView?.alpha = min(1, (yOffset - blurBackgroundStartOffset) / (blurBackgroundEndOffset - blurBackgroundStartOffset))
-                        println("alpha: \(self.blurImageView.alpha)")
+                        print("alpha: \(self.blurImageView.alpha)")
                         //                self.profileBackgroundImage.image = self.profileBackgroundImage.image!.applyLightEffect() // NOTE: doesn't like the effect
                         //NOTE: effect is not what I want
                         //                var visualEffectView = UIVisualEffectView(effect: UIBlurEffect(style: .Light)) as UIVisualEffectView
@@ -178,13 +178,13 @@ class ProfileViewController: UIViewController, UITableViewDataSource, UITableVie
             }
         }
         profileBackgroundImage.frame = headerRect
-        print("headerRect: " )
-        println(headerRect)
+        print("headerRect: ", terminator: "" )
+        print(headerRect)
     }
     
     override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
         if segue.identifier == "showDetailsFromProfile" {
-            var indexPath:NSIndexPath = sender as! NSIndexPath
+            let indexPath:NSIndexPath = sender as! NSIndexPath
             let tweet = self.tweets[indexPath.row]
             let tweetDetailVC = segue.destinationViewController as! TweetDetailViewController
             tweetDetailVC.tweet = tweet
@@ -201,7 +201,7 @@ class ProfileViewController: UIViewController, UITableViewDataSource, UITableVie
                 self.tweets! += tweets!
                 self.profileTableView.reloadData()
             } else {
-                println(error)
+                print(error)
             }
         })
     }

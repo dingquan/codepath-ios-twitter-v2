@@ -20,14 +20,14 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         NSNotificationCenter.defaultCenter().addObserver(self, selector: "userDidLogout", name: userDidLoginNotification, object: nil)
         
         if User.currentUser != nil {
-            var vc = storyboard.instantiateViewControllerWithIdentifier("ContainerViewController") as! ContainerViewController
+            let vc = storyboard.instantiateViewControllerWithIdentifier("ContainerViewController") as! ContainerViewController
             window?.rootViewController = vc
         }
         return true
     }
     
     func userDidLogout(){
-        var vc = storyboard.instantiateInitialViewController() as! UIViewController
+        var vc = storyboard.instantiateInitialViewController()! as UIViewController
         window?.rootViewController = vc
     }
 
@@ -53,7 +53,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         // Called when the application is about to terminate. Save data if appropriate. See also applicationDidEnterBackground:.
     }
 
-    func application(application: UIApplication, openURL url: NSURL, sourceApplication: String?, annotation: AnyObject?) -> Bool {
+    func application(application: UIApplication, openURL url: NSURL, sourceApplication: String?, annotation: AnyObject) -> Bool {
         TwitterClient.sharedInstance.openUrl(url)
         return true
     }
